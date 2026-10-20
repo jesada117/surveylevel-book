@@ -183,10 +183,9 @@ let rows=[];
 const mk=(sta="",bs="",ifs="",fs="",remark="",xs=null)=>({sta,bs,ifs,fs,remark,xs});
 const btn=(t,fn,cls="")=>{const b=document.createElement("button");b.type="button";b.textContent=t;b.className=cls;b.onclick=fn;return b};
 
-// ฟังก์ชันหาชื่อไฟล์ที่กำหนดจากชื่อโครงการ
 function getFileName(suffix, ext) {
   const pName = $("projectName") ? $("projectName").value.trim() : "";
-  const base = pName ? pName : "สมุดสนามงานระดับ";
+  const base = pName ? pName : "Level_Book";
   return `${base}${suffix}.${ext}`;
 }
 
@@ -539,7 +538,10 @@ function exportCAD(dl){
   const layers=[
     ["GRID_BLUE",5],    
     ["TEXT_GREEN",3],   
+    ["TEXT_RED",1],     
+    ["TEXT_WHITE",7],   
     ["LINE_YELLOW",2],  
+    ["LINE_RED",1],     
     ["FRAME",7]         
   ];
   layers.forEach(([name,col])=>{
@@ -550,11 +552,26 @@ function exportCAD(dl){
   const dLine=(x1,y1,x2,y2,lay="GRID_BLUE")=>{
     dxf+=`0\nLINE\n8\n${lay}\n10\n${x1.toFixed(4)}\n20\n${y1.toFixed(4)}\n30\n0.0\n11\n${x2.toFixed(4)}\n21\n${y2.toFixed(4)}\n31\n0.0\n`;
   };
+  const dLineDashed=(x1,y1,x2,y2,lay="LINE_RED",dash=1.5,gap=1.0)=>{
+    const dx=x2-x1, dy=y2-y1;
+    const dist=Math.sqrt(dx*dx + dy*dy);
+    if(dist===0) return;
+    const ux=dx/dist, uy=dy/dist;
+    let cx=x1, cy=y1, rem=dist;
+    while(rem > 0){
+        let d = Math.min(dash, rem);
+        dLine(cx, cy, cx+ux*d, cy+uy*d, lay);
+        cx += ux*(dash+gap);
+        cy += uy*(dash+gap);
+        rem -= (dash+gap);
+    }
+  };
   const dRect=(x1,y1,x2,y2,lay="FRAME")=>{
     dLine(x1,y1,x2,y1,lay); dLine(x2,y1,x2,y2,lay); dLine(x2,y2,x1,y2,lay); dLine(x1,y2,x1,y1,lay);
   };
-  const dText=(x,y,h,txt,lay="TEXT_GREEN",align="L")=>{
+  const dText=(x,y,h,txt,lay="TEXT_GREEN",align="L",rot=0)=>{
     dxf+=`0\nTEXT\n8\n${lay}\n10\n${x.toFixed(4)}\n20\n${y.toFixed(4)}\n30\n0.0\n40\n${h.toFixed(4)}\n1\n${txt}\n`;
+    if(rot !== 0) dxf += `50\n${rot}\n`;
     if(align==="C"){
       dxf+=`72\n1\n11\n${x.toFixed(4)}\n21\n${y.toFixed(4)}\n31\n0.0\n`;
     }else if(align==="R"){
@@ -566,30 +583,71 @@ function exportCAD(dl){
     const pts=G.pp;
     const minX=Math.min(...pts.map(p=>p.x)),maxX=Math.max(...pts.map(p=>p.x));
     const minY=Math.min(...pts.map(p=>p.y)),maxY=Math.max(...pts.map(p=>p.y));
-    const x0=Math.floor(minX),x1=Math.ceil(maxX);
-    const y0=Math.floor(minY)-2,y1=Math.ceil(maxY)+2;
-    const ox=0,oy=100; 
+    const x0=Math.floor(minX/25)*25, x1=Math.ceil(maxX/25)*25;
+    const y0=Math.floor(minY)-2, y1=Math.ceil(maxY)+2;
+    const ox=0, oy=150; 
 
     const pTitle = pName ? `PROFILE - ${pName}` : "PROFILE";
-    dText(ox+(x1-x0)/2,oy+(y1-y0)+2, 1.5, pTitle, "TEXT_GREEN", "C");
+    dText(ox+(x1-x0)/2, oy+(y1-y0)+4, 2.0, pTitle, "TEXT_RED", "C");
 
-    for(let y=y0;y<=y1;y++){
+    for(let y=y0; y<=y1; y++){
       const py=oy+(y-y0);
-      dLine(ox,py,ox+(x1-x0),py,"GRID_BLUE");
-      dText(ox-0.5,py-0.2,0.5,y.toFixed(0),"TEXT_GREEN","R");
+      dLine(ox, py, ox+(x1-x0), py, "GRID_BLUE");
+      dText(ox-2.0, py-0.4, 0.8, y.toFixed(0), "TEXT_GREEN", "R");
+      dText(ox+(x1-x0)+2.0, py-0.4, 0.8, y.toFixed(0), "TEXT_GREEN", "L");
     }
-    for(let x=x0;x<=x1;x++){
+    
+    // วาดเส้นกริดแกน X
+    for(let x=x0; x<=x1; x+=5){
       const px=ox+(x-x0);
-      const maj=(x%25===0);
-      if (x===x0||x===x1||maj) dLine(px,oy,px,oy+(y1-y0),"GRID_BLUE");
-      if(maj||x===x0||x===x1){
-        dxf+=`0\nTEXT\n8\nTEXT_GREEN\n10\n${(px+0.2).toFixed(4)}\n20\n${(oy-0.5).toFixed(4)}\n30\n0.0\n40\n0.5\n1\n${fmtSTA(x)}\n50\n90.0\n`;
+      // ถ้าเป็นระยะ 25m ให้ลากทะลุลงไปในตาราง Data Band ด้านล่าง
+      if(x%25===0) {
+         dLine(px, oy - 30, px, oy+(y1-y0), "GRID_BLUE");
+      } else {
+         dLine(px, oy, px, oy+(y1-y0), "GRID_BLUE");
       }
     }
-    for(let i=0;i<pts.length-1;i++){
-      const p1=pts[i],p2=pts[i+1];
-      dLine(ox+(p1.x-x0),oy+(p1.y-y0),ox+(p2.x-x0),oy+(p2.y-y0),"LINE_YELLOW");
+    
+    for(let i=0; i<pts.length-1; i++){
+      const p1=pts[i], p2=pts[i+1];
+      dLineDashed(ox+(p1.x-x0), oy+(p1.y-y0), ox+(p2.x-x0), oy+(p2.y-y0), "LINE_RED", 1.5, 1.0);
     }
+
+    // สร้างตารางข้อมูลแนวนอน (Data Band) ด้านล่าง Profile
+    const rowH = 10;
+    const band1 = oy; 
+    const band2 = oy - rowH; 
+    const band3 = oy - rowH*2; 
+    const bandBot = oy - rowH*3; 
+
+    dLine(ox, band2, ox+(x1-x0), band2, "GRID_BLUE");
+    dLine(ox, band3, ox+(x1-x0), band3, "GRID_BLUE");
+    dLine(ox, bandBot, ox+(x1-x0), bandBot, "GRID_BLUE");
+
+    const boxLeft = ox - 35;
+    dRect(boxLeft, bandBot, ox, band1, "GRID_BLUE"); 
+    dLine(boxLeft, band2, ox, band2, "GRID_BLUE");
+    dLine(boxLeft, band3, ox, band3, "GRID_BLUE");
+
+    dText(boxLeft + 17.5, band1 - 6, 1.5, "GROUND ELEV.", "TEXT_WHITE", "C");
+    dText(boxLeft + 17.5, band2 - 6, 1.5, "DESIGN ELEV.", "TEXT_WHITE", "C");
+    dText(boxLeft + 17.5, band3 - 6, 1.5, "STATION", "TEXT_WHITE", "C");
+
+    for(let x=x0; x<=x1; x+=25){
+        const px = ox + (x - x0);
+        dText(px, bandBot + 3.5, 1.2, fmtSTA(x), "TEXT_WHITE", "C");
+    }
+
+    pts.forEach(p=>{
+        const px=ox+(p.x-x0);
+        if(p.x % 25 !== 0) {
+            dLine(px, band1, px, band2, "GRID_BLUE");
+            if (p.x % 5 !== 0) {
+               dLine(px, oy, px, oy+(y1-y0), "GRID_BLUE");
+            }
+        }
+        dText(px + 1.2, band1 - rowH/2, 1.2, p.y.toFixed(3), "TEXT_RED", "C", 90);
+    });
   }
 
   const validXs = xsl.filter(x => { computeX(x); return x.cp && x.cp.length >= 2; });
