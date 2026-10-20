@@ -3,7 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>สมุดสนามงานระดับ (1:100 & CAD Export)</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f3f1ea;--card:#fff;--ink:#1d2b2a;--muted:#667470;--line:#d9d5c7;--grid:#b9c4bf;--head:#e3ece8;--accent:#1f6f5c;--accent-ink:#fff;--ok:#1f7a45;--bad:#b3261e;--calc:#eef4f1;--lc:#d9e9f6;--rc:#fbe8cf;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -110,8 +110,8 @@ svg.ch{height:auto;display:block;margin-top:8px}
         <button id="clear">ล้างตาราง</button>
         <button id="imp" type="button">⬆ นำเข้า CSV / Excel</button>
         <label class="info" style="cursor:pointer;"><input type="checkbox" id="impAppend" style="width:auto;min-height:0;vertical-align:middle"> ต่อท้ายตารางเดิม</label>
-        <label class="info" style="cursor:pointer; color:var(--accent); font-weight:600; margin-left:8px;" title="พิมพ์ตัวเลขเช่น 1406 แล้วระบบจะใส่จุดให้เป็น 1.406 ทันที (ถ้าพิมพ์ 1-2 หลักจะปัดเป็น .000)">
-          <input type="checkbox" id="fastMode" style="width:auto;min-height:0;vertical-align:middle"> ⚡ โหมดพิมพ์เร็ว
+        <label class="info" style="cursor:pointer; color:var(--accent); font-weight:600; margin-left:8px;" title="พิมพ์ตัวเลข 3 หลักขึ้นไป เช่น 1406 ระบบจะใส่จุดให้เป็น 1.406 (ถ้าพิมพ์ 1-2 หลัก เช่น 1 จะเป็น 1.000)">
+          <input type="checkbox" id="fastMode" style="width:auto;min-height:0;vertical-align:middle" checked> ⚡ โหมดพิมพ์เร็ว (3 หลักขึ้นไป ➔ หาร 1000)
         </label>
         <input type="file" id="impFile" accept=".csv,.tsv,.txt,.xlsx" hidden="">
         <span id="impMsg" class="info"></span>
@@ -174,7 +174,8 @@ function inp(o,k,cls="",type="number"){
         let num = parseFloat(val);
         if(!isNaN(num)){
           const fm = $("fastMode");
-          // ถ้าเปิดโหมด Fast Mode + ไม่มีจุดทศนิยม + มีตัวเลขตั้งแต่ 3 หลักขึ้นไป
+          // เงื่อนไขโหมดพิมพ์เร็ว: จะหาร 1000 ก็ต่อเมื่อเปิดสวิตช์ + ไม่มีจุดทศนิยม + ยาวตั้งแต่ 3 หลักขึ้นไป (เช่น 1406)
+          // ถ้าพิมพ์ 1 หรือ 15 จะไม่หาร 1000 แต่จะปัดทศนิยมเป็น 3 ตำแหน่งปกติ (เช่น 1.000, 15.000)
           if(fm && fm.checked && !val.includes(".") && val.length >= 3){
             num = num / 1000;
           }
@@ -411,7 +412,7 @@ function build(){
     r.cHi=cell("","c");
     cell(inp(r,"ifs"));
     cell(inp(r,"fs"));
-    r.cEl=i===0?cell(inp(S,"v"),"c b"):cell("","c b");
+    r.cEl=i===0?cell(inp(S,"v","","number"),"c b"):cell("","c b");
     cell(inp(r,"remark","l","text"));
     const act=document.createElement("div");act.className="act";
     const rb=btn("Cross",()=>goCross(r));rb.title="ไปทำ Cross section ของ STA นี้ (หน้า 2)";act.append(rb);
