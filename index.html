@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="th"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>สมุดสนามงานระดับ (1:100 & CAD Export)</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f1ea;--card:#fff;--ink:#1d2b2a;--muted:#667470;--line:#d9d5c7;--grid:#b9c4bf;--head:#e3ece8;--accent:#1f6f5c;--accent-ink:#fff;--ok:#1f7a45;--bad:#b3261e;--calc:#eef4f1;--lc:#d9e9f6;--rc:#fbe8cf;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121a19;--card:#1a2523;--ink:#e6efec;--muted:#93a6a0;--line:#2e3d3a;--grid:#3b4d49;--head:#243533;--accent:#4fc3a1;--accent-ink:#06201a;--ok:#5fd18a;--bad:#ff8a80;--calc:#203130;--lc:#1c3548;--rc:#47351c}}
+:root[data-theme="dark"]{--bg:#121a19;--card:#1a2523;--ink:#e6efec;--muted:#93a6a0;--line:#2e3d3a;--grid:#3b4d49;--head:#243533;--accent:#4fc3a1;--accent-ink:#06201a;--ok:#5fd18a;--bad:#ff8a80;--calc:#203130;--lc:#1c3548;--rc:#47351c}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans Thai",system-ui,sans-serif;line-height:1.5;font-size:16px}
+main{max-width:1500px;margin:0 auto;padding:16px 16px 56px}
+.hero{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:linear-gradient(135deg,#17594a,#2c8a72);color:#fff;border-radius:14px;padding:20px 24px;margin-bottom:16px}
+.hero h1{color:#fff;margin:0}.hero .hb{flex-wrap:wrap}.hero .sub{color:#d8efe7;margin:4px 0 0}
+#xl,#sv,#dwg{background:#fff;color:#17594a;border:0;font-weight:700;min-height:42px;padding:0 16px}
+#dwg{background:#ffd166;color:#1d2b2a}
+h1{font-size:1.7rem;margin:4px 0 4px}h2{font-size:1.2rem;margin:0 0 12px;padding-left:10px;border-left:4px solid var(--accent)}h3{font-size:1rem;margin:0 0 4px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(460px,1fr));gap:16px}
+.xc{border:1px solid var(--line);border-radius:10px;padding:12px;background:var(--bg);overflow-x:auto}
+th.gL{background:var(--lc);color:var(--ink)}th.gR{background:var(--rc);color:var(--ink)}th.gC{background:var(--head)}
+.xsh{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.xsh input{width:120px;border:1px solid var(--grid);border-radius:6px;text-align:left;font-weight:700}
+.info{color:var(--muted);font-size:.9rem}.warn{color:var(--bad);font-size:.9rem}
+.sub,.note{color:var(--muted)}.sub{margin:0 0 14px}.note{font-size:.88rem;margin:10px 0 0}
+.tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.tabs button{min-height:42px;padding:0 20px;font-size:1rem;font-weight:600}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px;min-width:0;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.scroll{overflow-x:auto}
+.chart-scroll{overflow-x:auto;padding-bottom:6px}
+table{border-collapse:collapse;width:100%}
+.sheet{min-width:760px}
+th,td{border:1px solid var(--grid);padding:0}
+th{background:var(--head);font-weight:600;font-size:.92rem;padding:9px 8px;text-align:center;white-space:nowrap}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input{width:100%;font:inherit;font-variant-numeric:tabular-nums;color:var(--ink);background:transparent;border:0;text-align:right;min-height:42px;padding:6px 10px}
+input.l{text-align:left}
+input:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+td.c{background:var(--calc);text-align:right;padding:6px 10px;font-variant-numeric:tabular-nums;white-space:nowrap}
+td.b,td.b input{font-weight:700}
+td.ctr{text-align:center}
+.xt td{min-width:96px}
+button{font:inherit;cursor:pointer;border-radius:6px;border:1px solid var(--grid);background:transparent;color:var(--ink);min-height:36px;padding:0 12px;font-size:.9rem}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+button.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+button.del{color:var(--bad);border-color:transparent;min-height:30px;padding:0 8px}
+.act{display:flex;gap:4px;padding:2px 4px;align-items:center;white-space:nowrap}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.stp{display:flex;align-items:center;gap:6px;margin-left:auto;color:var(--muted);font-size:.9rem}
+.stp input{width:70px;border:1px solid var(--grid);border-radius:6px;text-align:center;min-height:36px}
+.xp{margin-bottom:24px;border:1px solid var(--line);border-radius:12px;padding:14px}
+.xh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.hb{display:flex;gap:6px;flex-wrap:wrap}
+.xt th{text-align:left;font-weight:500;white-space:nowrap}
+.xt th.gL,.xt th.gC,.xt th.gR{text-align:center;font-weight:700}
+.xt td.ctr input{text-align:center}
+.xt td.ctr{text-align:center}
+.checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:4px 20px;margin-top:16px}
+.checks div{display:flex;justify-content:space-between;border-bottom:1px dashed var(--line);font-variant-numeric:tabular-nums}
+.badge{display:inline-block;margin-top:10px;padding:5px 12px;border-radius:6px;font-weight:600;border:1px solid currentColor}
+.ok{color:var(--ok)}.bad{color:var(--bad)}
+svg.ch{height:auto;display:block;margin-top:8px}
+.ch text{fill:var(--muted);font-size:10px;font-family:inherit}
+.ch .gl{stroke:var(--line);stroke-width:0.7}.ch .gl-maj{stroke:var(--grid);stroke-width:1.1}.ch .ax{stroke:var(--ink);stroke-width:1.4}
+.ch .ln{stroke:var(--accent);stroke-width:2.2;fill:none}
+.ch .ar{fill:var(--accent);opacity:.14}
+.ch .pt{fill:var(--card);stroke:var(--accent);stroke-width:2}
+.ch .cl{stroke:var(--bad);stroke-width:1.5;stroke-dasharray:4 3}
+.ch text.v{fill:var(--ink);font-weight:600}
+</style>
+</head>
+<body>
+<main>
+  <div class="hero"><div><h1>สมุดสนามงานระดับ</h1>
+  <p class="sub">ใส่ Elevation ของ BM แล้วพิมพ์ B.S., IFS., FS. ระบบคำนวณ HI และ Elevation พร้อมวาดกริด 1:100 และส่งออก CAD</p></div>
+  <div class="hb">
+    <button id="sv" type="button" title="บันทึกข้อมูลปัจจุบันลงในไฟล์ HTML ใหม่">💾 บันทึกเป็นไฟล์ HTML</button>
+    <button id="xl" type="button">⬇ ส่งออก Excel (พร้อมรูป)</button>
+    <button id="dwg" type="button" title="ส่งออกไฟล์ CAD มาตราส่วน 1:200 (จัดหน้าละ 6 รูป) เปิดใน AutoCAD ได้ทันที">📐 ส่งออก CAD (.DXF / DWG 1:200)</button>
+  </div></div>
+  <div class="tabs">
+    <button class="on" id="t1" type="button">1. ตารางงานระดับ</button>
+    <button id="t2" type="button" class="">2. Cross section</button>
+    <button id="t3" type="button" class="">3. สรุป Profile &amp; Cross section</button>
+  </div>
+
+  <div id="p1">
+    <section>
+      <h2>ตารางงานระดับ</h2>
+      <div class="scroll">
+        <table class="sheet">
+          <thead><tr><th>STA</th><th>B.S.</th><th>HI.</th><th>IFS.</th><th>FS.</th><th>Elevation</th><th>Remark</th><th></th></tr></thead>
+          <tbody id="tb"></tbody>
+        </table>
+      </div>
+      <div class="actions">
+        <button class="primary" id="add">เพิ่มแถว</button>
+        <button id="addTP">เพิ่มจุดเปลี่ยน TP</button>
+        <button id="example">ใส่ตัวอย่าง</button>
+        <button id="clear">ล้างตาราง</button>
+        <button id="imp" type="button">⬆ นำเข้า CSV / Excel</button>
+        <label class="info" style="cursor:pointer;"><input type="checkbox" id="impAppend" style="width:auto;min-height:0;vertical-align:middle"> ต่อท้ายตารางเดิม</label>
+        <label class="info" style="cursor:pointer; color:var(--accent); font-weight:600; margin-left:8px;" title="พิมพ์ตัวเลขเช่น 1406 แล้วระบบจะใส่จุดให้เป็น 1.406 ทันที">
+          <input type="checkbox" id="fastMode" style="width:auto;min-height:0;vertical-align:middle"> ⚡ โหมดพิมพ์เร็ว (เช่น 1406 ➔ 1.406)
+        </label>
+        <input type="file" id="impFile" accept=".csv,.tsv,.txt,.xlsx" hidden="">
+        <span id="impMsg" class="info"></span>
+        <label class="stp">ก้าว STA (ม.) <input id="step" type="number" value="25" inputmode="decimal"></label>
+      </div>
+      <div id="chk"></div>
+    </section>
+    <section>
+      <h2>Profile (มาตราส่วน 1:100 · กริดช่องละ 1x1 เมตร)</h2>
+      <div id="prof" class="chart-scroll"></div>
+      <p class="note">ตารางกริดสัดส่วน 1:1 (ช่องละ 1 เมตร ทั้งแนวตั้งและแนวนอน) เพิ่มช่องว่างด้านบนและด้านล่าง เลื่อนแถบแนวนอนเพื่อดูตลอดสายทาง หรือกดส่งออกเป็นไฟล์ CAD ด้านบน</p>
+    </section>
+  </div>
+
+  <div id="p2" hidden="">
+    <section>
+      <h2>Cross section (มาตราส่วน 1:100 · กริดช่องละ 1x1 เมตร)</h2>
+      <div id="px"></div>
+      <p class="note" id="empty" style="display: none;">กด "เพิ่ม STA" เพื่อเพิ่มสถานีที่ต้องการทำ Cross section (รัน STA ต่อให้อัตโนมัติ) ค่าอ่านไม้และ HI ที่ CL ดึงจาก STA เดียวกันในตารางงานระดับ</p>
+      <div class="actions">
+        <button class="primary" id="addX">เพิ่ม STA</button>
+        <button id="sortX" type="button">⇅ เรียงลำดับ STA ใหม่</button>
+        <button id="pullX">ดึง STA ทั้งหมดจากตารางงานระดับ</button>
+      </div>
+    </section>
+  </div>
+
+  <div id="p3" hidden="">
+    <section><h2>Profile (1:100 · กริด 1x1 ม.)</h2><div id="prof3" class="chart-scroll"></div></section>
+    <section><h2>Cross section ทุก STA (1:100 · กริด 1x1 ม.)</h2><div class="grid2" id="p3x"></div></section>
+  </div>
+</main>
+<script id="saved" type="application/json">{"t":1792172793178,"v":"100","step":"25","rows":[{"sta":"BM.0","bs":"1.172","ifs":"","fs":"","remark":""},{"sta":"","bs":"","ifs":"1.722","fs":"","remark":""},{"sta":"0+000","bs":"","ifs":"1.948","fs":"","remark":""},{"sta":"0+025","bs":"","ifs":"2.1","fs":"","remark":""},{"sta":"TP.1","bs":"1.406","ifs":"","fs":"1.308","remark":""},{"sta":"0+050","bs":"","ifs":"2.4","fs":"","remark":""},{"sta":"ท้อง BOX","bs":"","ifs":"2.466","fs":"","remark":"ท้อง BOX"},{"sta":"0+083","bs":"","ifs":"2.588","fs":"","remark":""},{"sta":"0+100","bs":"","ifs":"2.567","fs":"","remark":""},{"sta":"TP.2","bs":"1.06","ifs":"","fs":"1.862","remark":""},{"sta":"0+125","bs":"","ifs":"1.924","fs":"","remark":""},{"sta":"0+150","bs":"","ifs":"2","fs":"","remark":""},{"sta":"0+169","bs":"","ifs":"2.15","fs":"","remark":""},{"sta":"0+175","bs":"","ifs":"2.15","fs":"","remark":""},{"sta":"0+200","bs":"","ifs":"2.25","fs":"","remark":""},{"sta":"0+225","bs":"","ifs":"2.315","fs":"","remark":""},{"sta":"0+250","bs":"","ifs":"2.425","fs":"","remark":""},{"sta":"TP.3","bs":"0.929","ifs":"","fs":"1.795","remark":""},{"sta":"0+275","bs":"","ifs":"1.766","fs":"","remark":""},{"sta":"0+300","bs":"","ifs":"1.81","fs":"","remark":""},{"sta":"0+325","bs":"","ifs":"2.125","fs":"","remark":""},{"sta":"0+350","bs":"","ifs":"2.19","fs":"","remark":""},{"sta":"BM.0/1","bs":"","ifs":"1.042","fs":"","remark":"BM.0/1"},{"sta":"TP.4","bs":"0.725","ifs":"","fs":"1.573","remark":""},{"sta":"0+375","bs":"","ifs":"1.47","fs":"","remark":""},{"sta":"0+400","bs":"","ifs":"1.587","fs":"","remark":""},{"sta":"0+425","bs":"","ifs":"1.71","fs":"","remark":""},{"sta":"0+450","bs":"","ifs":"1.765","fs":"","remark":""},{"sta":"0+468","bs":"","ifs":"1.865","fs":"","remark":""},{"sta":"0+475","bs":"","ifs":"1.821","fs":"","remark":""},{"sta":"0+500","bs":"","ifs":"1.85","fs":"","remark":""},{"sta":"TP.5","bs":"0.82","ifs":"","fs":"1.379","remark":""},{"sta":"0+525","bs":"","ifs":"1.38","fs":"","remark":""},{"sta":"0+550","bs":"","ifs":"1.49","fs":"","remark":""},{"sta":"0+575","bs":"","ifs":"1.625","fs":"","remark":""},{"sta":"0+600","bs":"","ifs":"1.69","fs":"","remark":""},{"sta":"0+625","bs":"","ifs":"1.815","fs":"","remark":""},{"sta":"0+650","bs":"","ifs":"1.89","fs":"","remark":""},{"sta":"0+675","bs":"","ifs":"1.955","fs":"","remark":""},{"sta":"TP.6","bs":"0.825","ifs":"","fs":"1.01","remark":""},{"sta":"0+700","bs":"","ifs":"1.83","fs":"","remark":""},{"sta":"0+750","bs":"","ifs":"1.97","fs":"","remark":""},{"sta":"0+800","bs":"","ifs":"2.1","fs":"","remark":""},{"sta":"0+850","bs":"","ifs":"2.27","fs":"","remark":""},{"sta":"0+900","bs":"","ifs":"2.4","fs":"","remark":""},{"sta":"TP.7","bs":"1.565","ifs":"","fs":"1.75","remark":""},{"sta":"0+950","bs":"","ifs":"2.5","fs":"","remark":""},{"sta":"1+000","bs":"","ifs":"2.93","fs":"","remark":""},{"sta":"BM.1","bs":"","ifs":"","fs":"1.606","remark":""}],"xs":[{"sta":"0+000","hi":"","clrd":"","l":[{"sp":"1","rd":"1.165"},{"sp":"1.1","rd":"1.190"},{"sp":"1","rd":"1.829"}],"r":[{"sp":"1.8","rd":"1.933"},{"sp":"1","rd":"1.343"}]},{"sta":"0+025","hi":"","clrd":"","l":[{"sp":"1","rd":"1.495"},{"sp":".5","rd":"1.485"},{"sp":".5","rd":"1.983"}],"r":[{"sp":".5","rd":"1.983"},{"sp":".3","rd":"1.485"},{"sp":"1","rd":"1.485"}]},{"sta":"0+050","hi":"","clrd":"","l":[{"sp":".5","rd":"1.3"},{"sp":"1","rd":"1.362"},{"sp":".5","rd":"2.049"}],"r":[{"sp":".5","rd":"2.312"},{"sp":".3","rd":"1.738"},{"sp":"1","rd":"1.705"}]},{"sta":"0+083","hi":"","clrd":"","l":[{"sp":"1","rd":"1.906"},{"sp":".5","rd":"1.906"},{"sp":".5","rd":"2.457"}],"r":[{"sp":".5","rd":"2.653"},{"sp":".2","rd":"1.811"},{"sp":".8","rd":"1.811"}]},{"sta":"0+100","hi":"","clrd":"","l":[{"sp":"1","rd":"1.920"},{"sp":".5","rd":"1.920"},{"sp":".5","rd":"2.570"}],"r":[{"sp":".5","rd":"2.560"},{"sp":".2","rd":"1.920"},{"sp":"1","rd":"2.030"}]},{"sta":"0+125","hi":"","clrd":"","l":[{"sp":"1","rd":"1.233"},{"sp":".5","rd":"1.233"},{"sp":".5","rd":"1.800"}],"r":[{"sp":"1","rd":"1.669"},{"sp":"1","rd":"1.150"},{"sp":".9","rd":"1.275"}]}]}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+<script>
+document.addEventListener('wheel', function(e) {
+  if (e.target.type === 'number') {
+    e.preventDefault();
+  }
+}, { passive: false });
+
+const $=id=>document.getElementById(id);
+const n=v=>{if(v===null||v===undefined)return null;v=String(v).trim();return v===""||isNaN(+v)?null:+v};
+const f=v=>v===null||v===undefined||isNaN(v)?"":v.toFixed(3);
+const g=v=>v===null?"":String(parseFloat(v.toFixed(3)));
+const S={v:"100.000"};
+let rows=[];
+const mk=(sta="",bs="",ifs="",fs="",remark="",xs=null)=>({sta,bs,ifs,fs,remark,xs});
+const btn=(t,fn,cls="")=>{const b=document.createElement("button");b.type="button";b.textContent=t;b.className=cls;b.onclick=fn;return b};
+
+function inp(o,k,cls="",type="number"){
+  const i=document.createElement("input");i.type=type;i.className=cls;
+  if(type==="number"){i.step="0.001";i.inputMode="decimal"}
+  i.value=o[k];
+  i.oninput=()=>{o[k]=i.value;update()};
+  if(type==="number"){
+    i.onchange=()=>{
+      let val = i.value.trim();
+      if(val !== ""){
+        let num = parseFloat(val);
+        if(!isNaN(num)){
+          const fm = $("fastMode");
+          if(fm && fm.checked && !val.includes(".")){
+            num = num / 1000;
+          }
+          i.value = num.toFixed(3);
+          o[k] = i.value;
+          update();
+        }
+      }
+    };
+  }
+  return i;
+}
+
+function tab(k){
+  [1,2,3].forEach(i=>{$("p"+i).hidden=k!==i;$("t"+i).className=k===i?"on":""});
+}
+[1,2,3].forEach(i=>$("t"+i).onclick=()=>tab(i));
+let xsl=[];const G={pp:[]};
+
+const staM=s=>{const m=/^\s*(\d+)\s*\+\s*(\d+(?:\.\d+)?)\s*$/.exec(s||"");return m?(+m[1])*1000+(+m[2]):null};
+const fmtSTA=m=>{let k=Math.floor(m/1000),r=Math.round((m-k*1000)*1000)/1000;if(r>=1000){k++;r-=1000}
+  const t=Number.isInteger(r)?String(r):String(r);return k+"+"+(r<100?(r<10?"00":"0"):"")+t};
+const step=()=>{const s=n($("step").value);return s&&s>0?s:25};
+function nextSta(){
+  for(let i=rows.length-1;i>=0;i--){const m=staM(rows[i].sta);if(m!==null)return fmtSTA(snap(m))}
+  return "0+000";
+}
+function rerun(list,i,fn){
+  let m=staM(list[i].sta);if(m===null)return;
+  for(let j=i+1;j<list.length;j++){
+    if(/^\s*(TP|BM)/i.test(list[j].sta))continue;
+    m=snap(m);list[j].sta=fmtSTA(m);
+  }
+  fn();
+}
+const snap=m=>m+step();
+const newX=sta=>({sta,hi:"",clrd:"",l:[0,1,2].map(()=>({sp:"",rd:""})),r:[0,1,2].map(()=>({sp:"",rd:""}))});
+
+function sortXsl(focusItem=null){
+  const copy=[...xsl];
+  xsl.sort((a,b)=>{
+    const ma=staM(a.sta),mb=staM(b.sta);
+    if(ma!==null&&mb!==null)return ma-mb;
+    if(ma!==null)return -1;
+    if(mb!==null)return 1;
+    return 0;
+  });
+  const changed=copy.some((x,idx)=>x!==xsl[idx]);
+  if(changed)build2();
+  if(focusItem&&focusItem.cPanel){
+    focusItem.cPanel.scrollIntoView({behavior:"smooth",block:"center"});
+    focusItem.cPanel.style.outline="3px solid var(--accent)";
+    setTimeout(()=>{if(focusItem.cPanel)focusItem.cPanel.style.outline=""},1500);
+  }
+}
+
+function goCross(r){
+  const m=staM(r.sta);if(m===null){alert("ตั้งชื่อ STA เป็นรูปแบบ 0+000 ก่อน");return}
+  let x=xsl.find(x=>staM(x.sta)===m);
+  if(!x){x=newX(r.sta);xsl.push(x);sortXsl();}
+  tab(2);build2();
+  x.cPanel.scrollIntoView({behavior:"smooth",block:"start"});x.cPanel.style.outline="3px solid var(--accent)";setTimeout(()=>x.cPanel.style.outline="",1500);
+}
+function nextX(){
+  for(let i=xsl.length-1;i>=0;i--){const m=staM(xsl[i].sta);if(m!==null)return fmtSTA(snap(m))}
+  const r=rows.find(r=>staM(r.sta)!==null);return r?r.sta:"0+000";
+}
+
+const EXS='<style>text{fill:#555;font-size:10px;font-family:"IBM Plex Sans Thai",Tahoma,sans-serif}.gl{stroke:#e2e6e4;stroke-width:0.7}.gl-maj{stroke:#b9c4bf;stroke-width:1.1}.ax{stroke:#333;stroke-width:1.4}.ln{stroke:#1f6f5c;stroke-width:2.2;fill:none}.ar{fill:#1f6f5c;opacity:.14}.pt{fill:#fff;stroke:#1f6f5c;stroke-width:2}.cl{stroke:#b3261e;stroke-width:1.5;stroke-dasharray:4 3}text.v{fill:#111;font-weight:600}</style>';
+
+function svgChart(pts,o){
+  if(pts.length<2)return '<p class="note">'+o.empty+'</p>';
+  const xs=pts.map(p=>p.x),ys=pts.map(p=>p.y);
+  const minX=Math.min(...xs),maxX=Math.max(...xs);
+  const minY=Math.min(...ys),maxY=Math.max(...ys);
+  const P=!!o.prof;
+
+  // สำหรับ Cross section ขยายกรอบเผื่อ บน-ล่าง อย่างละ 5 เมตร
+  const yPadding = P ? 2 : 5;
+  const y0 = Math.floor(minY) - yPadding;
+  const y1 = Math.ceil(maxY) + yPadding;
+  
+  let x0=Math.floor(minX);
+  let x1=Math.ceil(maxX);
+  if(!P){
+    // ขยายกรอบซ้ายขวา อย่างน้อยให้กว้าง 6 เมตร
+    x0 = Math.min(x0, -6);
+    x1 = Math.max(x1, 6);
+  }else if(x1===x0){
+    x1=x0+1;
+  }
+
+  const spanX=Math.max(1,x1-x0);
+  const spanY=Math.max(1,y1-y0);
+
+  const PX=P?18:36; 
+  const L=58,R=24,T=30,B=P?72:56;
+  const plotW=spanX*PX;
+  const plotH=spanY*PX;
+  const W=L+plotW+R;
+  const H=T+plotH+B;
+  const base=T+plotH;
+
+  const X=x=>L+(x-x0)*PX;
+  const Y=y=>base-(y-y0)*PX;
+
+  let s='<svg class="ch" xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" style="min-width:'+Math.min(W,680)+'px;max-width:none" role="img" aria-label="'+o.label+'">'+(o.ex?EXS+'<rect width="100%" height="100%" fill="#fff"/>':'')+'<text x="4" y="14">Elevation (ม.) [Scale 1:100 | กริด 1x1 ม.]</text>';
+
+  for(let v=y0;v<=y1;v++){
+    const y=Y(v),maj=(v%5===0);
+    s+='<line class="'+(maj?'gl-maj':'gl')+'" x1="'+L+'" x2="'+(W-R)+'" y1="'+y+'" y2="'+y+'"/>';
+    s+='<text x="'+(L-6)+'" y="'+(y+3)+'" text-anchor="end">'+v.toFixed(0)+'</text>';
+  }
+
+  const labelStepX=P?5:1;
+  for(let v=x0;v<=x1;v++){
+    const xx=X(v),maj=P?(v%25===0):(v%5===0||v===0);
+    s+='<line class="'+(maj?'gl-maj':'gl')+'" x1="'+xx+'" x2="'+xx+'" y1="'+T+'" y2="'+base+'"/>';
+    if((v-x0)%labelStepX===0||v===0||maj){
+      if(P){
+        s+='<text x="'+(xx+3.5)+'" y="'+(base+8)+'" text-anchor="end" transform="rotate(-90 '+(xx+3.5)+' '+(base+8)+')">'+o.fx(v)+'</text>';
+      }else{
+        s+='<text x="'+xx+'" y="'+(base+14)+'" text-anchor="middle">'+o.fx(v)+'</text>';
+      }
+    }
+  }
+
+  s+='<rect x="'+L+'" y="'+T+'" width="'+plotW+'" height="'+plotH+'" fill="none" class="ax"/>';
+  if(o.cl&&x0<=0&&x1>=0)s+='<line class="cl" x1="'+X(0)+'" x2="'+X(0)+'" y1="'+T+'" y2="'+base+'"/>';
+
+  const poly=pts.map(p=>X(p.x).toFixed(1)+','+Y(p.y).toFixed(1)).join(' ');
+  s+='<polygon class="ar" points="'+X(pts[0].x).toFixed(1)+','+base+' '+poly+' '+X(pts[pts.length-1].x).toFixed(1)+','+base+'"/><polyline class="ln" points="'+poly+'"/>';
+
+  pts.forEach(p=>{
+    const cx=X(p.x),cy=Y(p.y);
+    s+='<circle class="pt" cx="'+cx+'" cy="'+cy+'" r="3.2"/>';
+    s+='<text class="v" x="'+cx+'" y="'+(cy-7)+'" text-anchor="middle">'+p.y.toFixed(3)+'</text>';
+  });
+
+  if(o.cl)s+='<text class="v" x="'+L+'" y="'+(base+32)+'">◄ ด้านซ้าย (Left)</text><text class="v" x="'+(W-R)+'" y="'+(base+32)+'" text-anchor="end">ด้านขวา (Right) ►</text>';
+  return s+'<text x="'+(L+plotW/2)+'" y="'+(H-6)+'" text-anchor="middle">'+o.xl+'</text></svg>';
+}
+
+function panel(x,i){
+  const d=document.createElement("div");d.className="xp";x.cPanel=d;
+  const h=document.createElement("div");h.className="xh";
+  const hl=document.createElement("div");hl.className="xsh";
+  const si=inp(x,"sta","l","text");si.setAttribute("aria-label","STA");
+  si.addEventListener("change",()=>{
+    const m=staM(x.sta);
+    if(m!==null)x.sta=fmtSTA(m);
+    sortXsl(x);
+  });
+  si.addEventListener("keydown",e=>{
+    if(e.key==="Enter"){
+      e.preventDefault();
+      si.blur();
+    }
+  });
+  x.cInfo=document.createElement("span");
+  x.hi=x.hi??"";x.clrd=x.clrd??"";
+  x.hiIn=inp(x,"hi");x.hiIn.setAttribute("aria-label","HI");
+  const hw=document.createElement("label");hw.className="xsh";hw.append("HI",x.hiIn);
+  hl.append(document.createTextNode("STA"),si,hw,x.cInfo);
+  const hb=document.createElement("span");hb.className="hb";
+  const insBtn=btn("＋แทรก STA",()=>{
+    const curM=staM(x.sta);
+    const nextItem=xsl[i+1];
+    const nextM=nextItem?staM(nextItem.sta):null;
+    let newSta="";
+    if(curM!==null&&nextM!==null&&nextM>curM+1){
+      newSta=fmtSTA(Math.round((curM+nextM)/2));
+    }else if(curM!==null){
+      newSta=fmtSTA(curM+5);
+    }
+    const nx=newX(newSta);
+    xsl.splice(i+1,0,nx);
+    build2();
+    const inpEl=nx.cPanel&&nx.cPanel.querySelector("input");
+    if(inpEl){inpEl.focus();inpEl.select();}
+  },"primary");
+  insBtn.title="แทรกหน้า Cross section ใหม่ต่อจาก STA นี้";
+  const rb=btn("รัน↓",()=>rerun(xsl,i,build2));rb.title="รัน STA ถัดไปต่อจากนี้";
+  hb.append(insBtn,btn("+ ซ้าย",()=>{x.l.unshift({sp:"",rd:""});build2()}),btn("+ ขวา",()=>{x.r.push({sp:"",rd:""});build2()}),rb,btn("ลบ STA",()=>{xsl.splice(i,1);build2()},"del"));
+  h.append(hl,hb);
+  const sc=document.createElement("div");sc.className="scroll";
+  const t=document.createElement("table");t.className="xt";
+  const trs=["","ระยะรวมจาก CL (ม.)","ระยะระหว่างจุด (ม.)","ค่าอ่านไม้","Elevation",""].map(l=>{
+    const tr=document.createElement("tr"),th=document.createElement("th");th.textContent=l;tr.append(th);t.append(tr);return tr});
+  const grp=(txt,n,cls)=>{if(!n)return;const th=document.createElement("th");th.textContent=txt;th.colSpan=n;th.className=cls;trs[0].append(th)};
+  const add=(k,node,cls)=>{const td=document.createElement("td");if(cls)td.className=cls;if(node!=null)td.append(node);trs[k].append(td);return td};
+  const side=arr=>arr.forEach((p,j)=>{
+    p.cOff=add(1,"","c b");add(2,inp(p,"sp"));add(3,inp(p,"rd"));p.cEl=add(4,"","c b");
+    add(5,btn("✕",()=>{arr.splice(j,1);build2()},"del"));
+  });
+  grp("◄ ด้านซ้าย (Left)",x.l.length,"gL");grp("CL",1,"gC");grp("ด้านขวา (Right) ►",x.r.length,"gR");
+  side(x.l);
+  add(1,"CL","c b ctr");add(2,"0","c ctr");x.cCLin=inp(x,"clrd");x.cCLrd=add(3,x.cCLin,"ctr");x.cCLel=add(4,"","c b ctr");add(5,null);
+  side(x.r);
+  x.cChart=document.createElement("div");x.cChart.className="chart-scroll";sc.append(t);d.append(h,sc,x.cChart);return d;
+}
+function build2(){
+  const px=$("px");px.innerHTML="";
+  xsl.forEach((x,i)=>px.append(panel(x,i)));
+  $("empty").style.display=xsl.length?"none":"block";
+  update();
+}
+const xChart=(x,ex)=>svgChart(x.cp,{cl:true,ex,label:"Cross section STA "+x.sta,fx:v=>String(parseFloat(Math.abs(v).toFixed(2))),xl:"ระยะจาก CL (ม.)",empty:(x.row||x.used!==null)?"กรอกระยะระหว่างจุดและค่าอ่านไม้อย่างน้อย 1 จุด เพื่อดูรูป Cross section":"ไม่พบ STA นี้ในตารางงานระดับ"});
+
+function computeX(x){
+  const row=rows.find(r=>{const a=staM(r.sta);return a!==null&&a===staM(x.sta)})||null;
+  x.row=row;const au={hi:row?row.used:null,rd:row?row.rd:null};x.auto=au;
+  const mh=n(x.hi),mr=n(x.clrd);
+  x.used=mh!==null?mh:au.hi;x.rd=mr!==null?mr:au.rd;
+  x.el=(x.used!==null&&x.rd!==null)?x.used-x.rd:(row?row.el:null);
+  const calc=(arr,left)=>{
+    let s=0;const ord=arr.map((p,j)=>j);if(left)ord.reverse();
+    ord.forEach(j=>{const p=arr[j],v=n(p.sp);s=(s===null||v===null)?null:s+v;p.off=s;
+      const rd=n(p.rd);p.ev=(x.used!==null&&rd!==null)?x.used-rd:null;p.elv=(p.ev!==null&&s!==null)?p.ev:null});
+  };
+  calc(x.l,true);calc(x.r,false);
+  const cp=[];
+  x.l.forEach(p=>{if(p.elv!==null)cp.push({x:-p.off,y:p.elv})});
+  if(x.el!==null)cp.push({x:0,y:x.el});
+  x.r.forEach(p=>{if(p.elv!==null)cp.push({x:p.off,y:p.elv})});
+  cp.sort((a,b)=>a.x-b.x);x.cp=cp;
+}
+
+function build(){
+  const tb=$("tb");tb.innerHTML="";
+  rows.forEach((r,i)=>{
+    const tr=document.createElement("tr");
+    const cell=(node,cls)=>{const td=document.createElement("td");if(cls)td.className=cls;td.append(node);tr.append(td);return td};
+    cell(inp(r,"sta","l","text"));
+    cell(inp(r,"bs"));
+    r.cHi=cell("","c");
+    cell(inp(r,"ifs"));
+    cell(inp(r,"fs"));
+    r.cEl=i===0?cell(inp(S,"v"),"c b"):cell("","c b");
+    cell(inp(r,"remark","l","text"));
+    const act=document.createElement("div");act.className="act";
+    const rb=btn("Cross",()=>goCross(r));rb.title="ไปทำ Cross section ของ STA นี้ (หน้า 2)";act.append(rb);
+    const ib=btn("＋แทรก",()=>{rows.splice(i+1,0,mk());build();const t=$("tb").children[i+1],q=t&&t.querySelector("input");if(q)q.focus()});ib.title="แทรกแถวใหม่ใต้แถวนี้ (ใส่ STA เอง)";act.append(ib);
+    if(i>0)act.append(btn("✕",()=>{rows.splice(i,1);build()},"del"));
+    cell(act);
+    tb.append(tr);
+  });
+  update();
+}
+
+function update(){
+  let HI=null,sFS=0,lastFS=-1;
+  rows.forEach((r,i)=>{
+    const bs=n(r.bs),ifs=n(r.ifs),fs=n(r.fs),rd=fs!==null?fs:ifs;
+    const old=HI;let el=null;
+    if(i===0)el=n(S.v);else if(old!==null&&rd!==null)el=old-rd;
+    let nh=old;r.hiShow=null;
+    if(bs!==null&&el!==null){nh=el+bs;r.hiShow=nh}
+    HI=nh;r.el=el;r.rd=rd;
+    r.used=(i>0&&rd!==null)?old:nh;
+    if(fs!==null){sFS+=fs;lastFS=i}
+    r.cHi.textContent=f(r.hiShow);
+    if(i>0)r.cEl.textContent=f(el);
+  });
+  xsl.forEach(x=>{
+    computeX(x);
+    if(x.cInfo){
+      const ok=x.used!==null&&x.rd!==null,man=n(x.hi)!==null||n(x.clrd)!==null;
+      x.cInfo.className=(x.row||ok)?"info":"warn";
+      x.cInfo.textContent=ok?"ที่ CL: HI "+f(x.used)+" − "+f(x.rd)+" = "+f(x.el)+((x.row&&!man)?" (ดึงจากตารางงานระดับ)":" (ใช้ค่าที่พิมพ์เอง)"):(x.row?"":"ไม่พบ STA นี้ในตารางงานระดับ — พิมพ์ HI และค่าอ่านเองได้");
+      x.hiIn.placeholder=x.auto.hi!==null?f(x.auto.hi):"auto";
+      x.cCLin.placeholder=x.auto.rd!==null?f(x.auto.rd):"";
+      x.cCLel.textContent=f(x.el);
+      [x.l,x.r].forEach(arr=>arr.forEach(p=>{p.cOff.textContent=g(p.off);p.cEl.textContent=f(p.ev)}));
+      x.cChart.innerHTML=xChart(x,false);
+    }
+  });
+  $("p3x").innerHTML=xsl.length?"":'<p class="note">ยังไม่มี Cross section เพิ่ม STA ที่หน้า 2</p>';
+  xsl.forEach(x=>{const d=document.createElement("div");d.className="xc";d.innerHTML="<h3>STA "+(x.sta||"-")+(x.used!==null&&x.used!==undefined?' <span class="info">(HI '+f(x.used)+")</span>":"")+"</h3>"+xChart(x,false);$("p3x").append(d)});
+  const pp=[];
+  rows.forEach(r=>{const c=staM(r.sta);if(c!==null&&r.el!==null)pp.push({x:c,y:r.el})});
+  pp.sort((a,b)=>a.x-b.x);G.pp=pp;
+  const pOpt={prof:true,label:"Profile",fx:fmtSTA,xl:"STA (1 ช่อง = 1 เมตร)",empty:"ตั้งชื่อ STA เป็นรูปแบบ 0+000 อย่างน้อย 2 แถวที่มี Elevation เพื่อดูโปรไฟล์"};
+  $("prof").innerHTML=svgChart(pp,pOpt);$("prof3").innerHTML=svgChart(pp,pOpt);
+  
+  const chk=$("chk");chk.innerHTML="";
+
+  const L=(x,y)=>'<div><span>'+x+'</span><b>'+y+'</b></div>';
+
+  if(lastFS>0){
+    let sBS=0;for(let i=0;i<lastFS;i++){const b=n(rows[i].bs);if(b!==null)sBS+=b}
+    const e=rows[lastFS].el,e0=n(S.v);
+    if(e!==null&&e0!==null){
+      const a=sBS-sFS,b=e-e0,ok=Math.abs(a-b)<0.0006;
+      let diffText = "BM. เริ่มต้น กับ BM. สิ้นสุด ระดับเท่ากัน";
+      if (b > 0) {
+          diffText = "BM. สิ้นสุด สูงกว่า BM. เริ่มต้น";
+      } else if (b < 0) {
+          diffText = "BM. สิ้นสุด ต่ำกว่า BM. เริ่มต้น";
+      }
+      chk.innerHTML='<div class="checks">'+L("ΣBS",f(sBS))+L("ΣFS",f(sFS))+L("ΣBS − ΣFS",f(a))+L(diffText, f(Math.abs(b))+" ม.")+'</div>'+
+        '<div class="badge '+(ok?"ok":"bad")+'">'+(ok?"✓ ตรวจสอบผลรวมผ่าน":"✗ ผลรวมไม่ตรงกัน ตรวจค่า BS/FS ที่กรอกอีกครั้ง")+'</div>';
+    }else chk.innerHTML='<p class="note">กรอก B.S. ให้ครบทุกจุดเปลี่ยน เพื่อดูผลตรวจสอบ</p>';
+  }
+  persist();
+}
+
+$("add").onclick=()=>{rows.push(mk(nextSta()));build()};
+$("addTP").onclick=()=>{const k=rows.filter(r=>/^TP\./i.test(r.sta)).length+1;rows.push(mk("TP."+k));build()};
+$("clear").onclick=()=>{S.v="100.000";rows=[mk("BM.0"),mk(),mk()];xsl=[];build();build2()};
+$("addX").onclick=()=>{
+  const nx=newX(nextX());
+  xsl.push(nx);
+  sortXsl(nx);
+  build2();
+  const inpEl=nx.cPanel&&nx.cPanel.querySelector("input");
+  if(inpEl){inpEl.focus();inpEl.select();}
+};
+$("sortX").onclick=()=>sortXsl();
+$("pullX").onclick=()=>{
+  rows.forEach(r=>{const m=staM(r.sta);if(m!==null&&!xsl.some(x=>staM(x.sta)===m))xsl.push(newX(r.sta))});
+  sortXsl();
+  build2();
+};
+$("example").onclick=()=>{
+  S.v="100.000";
+  rows=[mk("BM.0","1.172"),mk("","","1.722"),mk("0+000","","1.948"),mk("0+025","","2.100"),mk("TP.1","1.406","","1.308"),mk("0+050","","2.400"),mk("0+075","","2.466")];
+  xsl=[{sta:"0+000",hi:"",clrd:"",l:[{sp:"1",rd:"1.165"},{sp:"1.1",rd:"1.190"},{sp:"1",rd:"1.829"}],r:[{sp:"1.8",rd:"1.933"},{sp:"1",rd:"1.343"}]}];
+  build();build2();
+};
+
+/* --- เปลี่ยนแปลงฟังก์ชัน exportCAD ใหม่ทั้งหมด ให้จัด Layout กรอบ A3 1:200 --- */
+function exportCAD(dl){
+  let dxf="0\nSECTION\n2\nHEADER\n9\n$INSUNITS\n70\n6\n0\nENDSEC\n";
+  dxf+="0\nSECTION\n2\nTABLES\n0\nTABLE\n2\nLAYER\n70\n6\n";
+  
+  const layers=[
+    ["GRID_BLUE",5],    
+    ["TEXT_GREEN",3],   
+    ["LINE_YELLOW",2],  
+    ["FRAME",7]         
+  ];
+  layers.forEach(([name,col])=>{
+    dxf+=`0\nLAYER\n2\n${name}\n70\n0\n62\n${col}\n6\nCONTINUOUS\n`;
+  });
+  dxf+="0\nENDTAB\n0\nENDSEC\n0\nSECTION\n2\nENTITIES\n";
+
+  const dLine=(x1,y1,x2,y2,lay="GRID_BLUE")=>{
+    dxf+=`0\nLINE\n8\n${lay}\n10\n${x1.toFixed(4)}\n20\n${y1.toFixed(4)}\n30\n0.0\n11\n${x2.toFixed(4)}\n21\n${y2.toFixed(4)}\n31\n0.0\n`;
+  };
+  const dRect=(x1,y1,x2,y2,lay="FRAME")=>{
+    dLine(x1,y1,x2,y1,lay); dLine(x2,y1,x2,y2,lay); dLine(x2,y2,x1,y2,lay); dLine(x1,y2,x1,y1,lay);
+  };
+  const dText=(x,y,h,txt,lay="TEXT_GREEN",align="L")=>{
+    dxf+=`0\nTEXT\n8\n${lay}\n10\n${x.toFixed(4)}\n20\n${y.toFixed(4)}\n30\n0.0\n40\n${h.toFixed(4)}\n1\n${txt}\n`;
+    if(align==="C"){
+      dxf+=`72\n1\n11\n${x.toFixed(4)}\n21\n${y.toFixed(4)}\n31\n0.0\n`;
+    }else if(align==="R"){
+      dxf+=`72\n2\n11\n${x.toFixed(4)}\n21\n${y.toFixed(4)}\n31\n0.0\n`;
+    }
+  };
+
+  if(G.pp.length>=2){
+    const pts=G.pp;
+    const minX=Math.min(...pts.map(p=>p.x)),maxX=Math.max(...pts.map(p=>p.x));
+    const minY=Math.min(...pts.map(p=>p.y)),maxY=Math.max(...pts.map(p=>p.y));
+    const x0=Math.floor(minX),x1=Math.ceil(maxX);
+    const y0=Math.floor(minY)-2,y1=Math.ceil(maxY)+2;
+    const ox=0,oy=100; 
+
+    dText(ox+(x1-x0)/2,oy+(y1-y0)+2, 1.5, "PROFILE", "TEXT_GREEN", "C");
+
+    for(let y=y0;y<=y1;y++){
+      const py=oy+(y-y0);
+      dLine(ox,py,ox+(x1-x0),py,"GRID_BLUE");
+      dText(ox-0.5,py-0.2,0.5,y.toFixed(0),"TEXT_GREEN","R");
+    }
+    for(let x=x0;x<=x1;x++){
+      const px=ox+(x-x0);
+      const maj=(x%25===0);
+      if (x===x0||x===x1||maj) dLine(px,oy,px,oy+(y1-y0),"GRID_BLUE");
+      if(maj||x===x0||x===x1){
+        dxf+=`0\nTEXT\n8\nTEXT_GREEN\n10\n${(px+0.2).toFixed(4)}\n20\n${(oy-0.5).toFixed(4)}\n30\n0.0\n40\n0.5\n1\n${fmtSTA(x)}\n50\n90.0\n`;
+      }
+    }
+    for(let i=0;i<pts.length-1;i++){
+      const p1=pts[i],p2=pts[i+1];
+      dLine(ox+(p1.x-x0),oy+(p1.y-y0),ox+(p2.x-x0),oy+(p2.y-y0),"LINE_YELLOW");
+    }
+  }
+
+  const validXs = xsl.filter(x => { computeX(x); return x.cp && x.cp.length >= 2; });
+  const itemsPerPage = 6;
+  let pageIndex = 0;
+
+  for (let i = 0; i < validXs.length; i += itemsPerPage) {
+    const chunk = validXs.slice(i, i + itemsPerPage);
+    const baseX = pageIndex * 90;
+    const baseY = 0;
+
+    dRect(baseX, baseY, baseX + 84, baseY + 59.4, "FRAME");
+    dLine(baseX, baseY + 5, baseX + 84, baseY + 5, "FRAME");
+    dText(baseX + 42, baseY + 2, 1.2, "CROSS SECTIONS (SCALE 1:200)", "TEXT_GREEN", "C");
+
+    chunk.forEach((x, idx) => {
+      const col = idx % 2; 
+      const row = Math.floor(idx / 2); 
+      
+      const cx = baseX + col * 42 + 21;
+      const cy = baseY + 5 + (2 - row) * 18 + 9;
+
+      const pts = x.cp;
+      const minX = Math.min(...pts.map(p=>p.x)), maxX = Math.max(...pts.map(p=>p.x));
+      const minY = Math.min(...pts.map(p=>p.y)), maxY = Math.max(...pts.map(p=>p.y));
+      
+      let gx = Math.ceil(Math.max(Math.abs(minX), Math.abs(maxX))) + 2;
+      if (gx < 6) gx = 6; 
+      
+      const gy0 = Math.floor(minY) - 5;
+      const gy1 = Math.ceil(maxY) + 5;
+
+      const dx = cx;
+      const dy = cy - (gy0 + gy1) / 2;
+
+      for (let y = gy0; y <= gy1; y++) {
+        dLine(dx - gx, dy + y, dx + gx, dy + y, "GRID_BLUE");
+        dText(dx - gx - 0.5, dy + y - 0.3, 0.6, y.toString(), "TEXT_GREEN", "R");
+        dText(dx + gx + 0.5, dy + y - 0.3, 0.6, y.toString(), "TEXT_GREEN", "L");
+      }
+      for (let xv = -gx; xv <= gx; xv++) {
+        dLine(dx + xv, dy + gy0, dx + xv, dy + gy1, "GRID_BLUE");
+        dText(dx + xv, dy + gy0 - 1.2, 0.6, Math.abs(xv).toString(), "TEXT_GREEN", "C");
+      }
+
+      dLine(dx, dy + gy0, dx, dy + gy1, "LINE_YELLOW");
+      dText(dx, dy + gy1 + 0.5, 0.8, "CL", "TEXT_GREEN", "C");
+
+      for(let k=0; k<pts.length-1; k++){
+        const p1=pts[k], p2=pts[k+1];
+        dLine(dx + p1.x, dy + p1.y, dx + p2.x, dy + p2.y, "LINE_YELLOW");
+      }
+
+      const boxW = 10;
+      const boxH = 2.5;
+      const boxY = dy + gy0 - 5;
+      dRect(dx - boxW/2, boxY, dx + boxW/2, boxY + boxH, "TEXT_GREEN");
+      dText(dx, boxY + 0.8, 1.0, x.sta, "TEXT_GREEN", "C");
+
+    });
+
+    pageIndex++;
+  }
+
+  dxf+="0\nENDSEC\n0\nEOF\n";
+  const blob=new Blob([dxf],{type:"application/dxf"});
+  const name="Profile_CrossSection_1_200.dxf";
+  if(dl)dl.save({filename:name,data:blob});
+  else{
+    const u=URL.createObjectURL(blob),a=document.createElement("a");
+    a.href=u;a.download=name;document.body.append(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(u),2000);
+  }
+}
+/* --- สิ้นสุดฟังก์ชัน exportCAD --- */
+
+const KEY="levelbook-v1";
+function snapshot(){return{
+  t:Date.now(),v:S.v,step:$("step").value, fastMode:$("fastMode")?$("fastMode").checked:false,
+  rows:rows.map(r=>({sta:r.sta,bs:r.bs,ifs:r.ifs,fs:r.fs,remark:r.remark})),
+  xs:xsl.map(x=>({sta:x.sta,hi:x.hi??"",clrd:x.clrd??"",l:x.l.map(p=>({sp:p.sp,rd:p.rd})),r:x.r.map(p=>({sp:p.sp,rd:p.rd}))}))
+}}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(snapshot()))}catch(e){}}
+function applySnap(d){
+  S.v=d.v!=null?String(d.v):"100.000";
+  if(d.step!=null)$("step").value=d.step;
+  if(d.fastMode!=null&&$("fastMode"))$("fastMode").checked=d.fastMode;
+  rows=d.rows.map(r=>mk(r.sta||"",r.bs||"",r.ifs||"",r.fs||"",r.remark||""));
+  xsl=(d.xs||[]).map(x=>({sta:x.sta||"",hi:x.hi||"",clrd:x.clrd||"",l:(x.l||[]).map(p=>({sp:p.sp||"",rd:p.rd||""})),r:(x.r||[]).map(p=>({sp:p.sp||"",rd:p.rd||""}))}));
+  sortXsl();
+}
+async function saveHtml(dl){
+  try{
+    const clone=document.documentElement.cloneNode(true);
+    clone.querySelector("#saved").textContent=JSON.stringify(snapshot()).replace(/</g,"\\u003c");
+    ["tb","px","prof","prof3","p3x","chk","impMsg"].forEach(id=>{const e=clone.querySelector("#"+id);if(e)e.innerHTML=""});
+    [1,2,3].forEach(i=>{const p=clone.querySelector("#p"+i),b=clone.querySelector("#t"+i);
+      if(i===1)p.removeAttribute("hidden");else p.setAttribute("hidden","");b.className=i===1?"on":""});
+    const x=clone.querySelector("#xl");x.removeAttribute("disabled");x.textContent="⬇ ส่งออก Excel (พร้อมรูป)";
+    const blob=new Blob(["<!DOCTYPE html>\n"+clone.outerHTML],{type:"text/html"});
+    const name="สมุดสนามงานระดับ.html";
+    if(dl)await dl.save({filename:name,data:blob});
+    else{const u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000)}
+  }catch(e){if(!e||e.code!=="declined")alert("บันทึกไม่สำเร็จ: "+((e&&e.message)||e))}
+}
+
+function parseCSV(text){
+  text=text.replace(/^\uFEFF/,"");
+  const first=text.split(/\r?\n/,1)[0]||"";
+  const cnt=c=>first.split(c).length-1;
+  const d=[["\t",cnt("\t")],[";",cnt(";")],[",",cnt(",")]].sort((a,b)=>b[1]-a[1])[0][0];
+  const out=[];let row=[],cur="",q=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i];
+    if(q){if(c==='"'){if(text[i+1]==='"'){cur+='"';i++}else q=false}else cur+=c}
+    else if(c==='"')q=true;
+    else if(c===d){row.push(cur);cur=""}
+    else if(c==="\n"||c==="\r"){if(c==="\r"&&text[i+1]==="\n")i++;row.push(cur);out.push(row);row=[];cur=""}
+    else cur+=c;
+  }
+  if(cur!==""||row.length){row.push(cur);out.push(row)}
+  return out;
+}
+function decodeText(buf){
+  try{return new TextDecoder("utf-8",{fatal:true}).decode(buf)}
+  catch(e){return new TextDecoder("windows-874").decode(buf)}
+}
+function cellVal(v){
+  if(v===null||v===undefined)return "";
+  if(typeof v==="object"){
+    if(v.result!==undefined)return cellVal(v.result);
+    if(v.richText)return v.richText.map(t=>t.text).join("");
+    if(v.text!==undefined)return cellVal(v.text);
+    if(v instanceof Date)return "";
+  }
+  return String(v);
+}
+async function readXlsx(buf){
+  if(typeof ExcelJS==="undefined")throw new Error("โหลดตัวอ่านไฟล์ Excel ไม่ได้ ต้องเชื่อมต่ออินเทอร์เน็ตก่อน");
+  const wb=new ExcelJS.Workbook();await wb.xlsx.load(buf);
+  
+  const wsLevel = wb.getWorksheet("Level Book") || wb.worksheets[0];
+  if(!wsLevel)throw new Error("ไม่พบชีตในไฟล์");
+  const outLevel=[];
+  wsLevel.eachRow({includeEmpty:true},row=>{
+    const a=[];for(let c=1;c<=row.cellCount;c++)a.push(cellVal(row.getCell(c).value));outLevel.push(a);
+  });
+
+  const wsXS = wb.getWorksheet("Cross section");
+  const outXS=[];
+  if(wsXS){
+    wsXS.eachRow({includeEmpty:true},row=>{
+      const a=[];for(let c=1;c<=row.cellCount;c++)a.push(cellVal(row.getCell(c).value));outXS.push(a);
+    });
+  }
+
+  return { level: outLevel, xs: outXS };
+}
+
+function parseXS(xsData){
+  const result = [];
+  for(let i=0; i<xsData.length; i++) {
+    const r0 = xsData[i];
+    if(!r0 || !r0[0]) continue;
+    const match = String(r0[0]).match(/^STA\s+(\d+\+\d+(?:\.\d+)?)/i);
+    if(match) {
+      const sta = match[1];
+      let hiStr = "";
+      const hiMatch = String(r0[0]).match(/HI\s+([\d\.]+)/i);
+      if(hiMatch) hiStr = hiMatch[1];
+
+      const rSide = xsData[i+1] || [];
+      const rSp = xsData[i+3] || [];
+      const rRd = xsData[i+4] || [];
+
+      let l = [], r = [];
+      let clrd = "";
+
+      for(let c=1; c<rSide.length; c++) {
+        const side = String(rSide[c]).trim();
+        const sp = String(rSp[c] || "").trim();
+        const rd = String(rRd[c] || "").trim();
+        if(side.includes("ซ้าย")) {
+          l.push({sp, rd});
+        } else if(side === "CL") {
+          clrd = rd;
+        } else if(side.includes("ขวา")) {
+          r.push({sp, rd});
+        }
+      }
+      if(l.length === 0) l = [0,1,2].map(()=>({sp:"",rd:""}));
+      if(r.length === 0) r = [0,1,2].map(()=>({sp:"",rd:""}));
+      
+      result.push({ sta, hi: hiStr, clrd, l, r });
+      i += 5; 
+    }
+  }
+  return result;
+}
+
+function mapImport(data){
+  const key=s=>{
+    const k=String(s||"").toLowerCase().replace(/[^a-z0-9ก-๙]/g,"");
+    if(k==="sta"||k==="station")return"sta";
+    if(k==="bs"||k==="backsight")return"bs";
+    if(k==="ifs"||k==="is"||k==="intermediate")return"ifs";
+    if(k==="fs"||k==="foresight")return"fs";
+    if(k==="remark"||k==="remarks"||k==="หมายเหตุ")return"remark";
+    if(k==="elevation"||k==="el"||k==="rl")return"el";
+    return null;
+  };
+  let hi=-1,col={};
+  for(let i=0;i<Math.min(data.length,10)&&hi<0;i++){
+    const m={};data[i].forEach((c,j)=>{const k=key(c);if(k&&m[k]===undefined)m[k]=j});
+    if(Object.keys(m).length>=2){hi=i;col=m}
+  }
+  if(hi<0)col={sta:0,bs:1,ifs:2,fs:3,remark:4};
+  const num=v=>{const t=String(v??"").trim().replace(/,/g,"");return t!==""&&!isNaN(+t)?String(+t):""};
+  const get=(r,k)=>col[k]===undefined?"":(r[col[k]]??"");
+  const res=[];let el0=null;
+  data.slice(hi+1).forEach(r=>{
+    const sta=String(get(r,"sta")).trim(),bs=num(get(r,"bs")),ifs=num(get(r,"ifs")),fs=num(get(r,"fs")),remark=String(get(r,"remark")).trim();
+    if(!sta&&!bs&&!ifs&&!fs&&!remark)return;
+    if(res.length===0&&col.el!==undefined){const e=num(get(r,"el"));if(e!=="")el0=e}
+    res.push(mk(sta,bs,ifs,fs,remark));
+  });
+  return{list:res,el0,header:hi>=0};
+}
+
+$("imp").onclick=()=>$("impFile").click();
+$("impFile").onchange=async e=>{
+  const file=e.target.files[0];e.target.value="";if(!file)return;
+  const msg=$("impMsg");msg.className="info";msg.textContent="กำลังอ่านไฟล์…";
+  try{
+    const buf=await file.arrayBuffer();
+    if(/\.xls$/i.test(file.name))throw new Error("ไม่รองรับ .xls เก่า กรุณาบันทึกเป็น .xlsx หรือ .csv ก่อน");
+    
+    let dataLevel, dataXS = [];
+    if(/\.xlsx$/i.test(file.name)){
+      const parsed = await readXlsx(buf);
+      dataLevel = parsed.level;
+      dataXS = parsed.xs;
+    } else {
+      dataLevel = parseCSV(decodeText(buf));
+    }
+    
+    const r=mapImport(dataLevel);
+    if(!r.list.length)throw new Error("ไม่พบแถวข้อมูลในไฟล์");
+    
+    const importedXs = parseXS(dataXS);
+
+    if($("impAppend").checked){
+      const had=rows.filter(x=>x.sta||x.bs||x.ifs||x.fs||x.remark).length;
+      if(!had)rows=[];
+      rows=rows.concat(r.list);
+      if(!had&&r.el0!==null)S.v=r.el0;
+      
+      importedXs.forEach(ixs => {
+         const m = staM(ixs.sta);
+         if(m !== null) {
+             const ex = xsl.find(x => staM(x.sta) === m);
+             if(ex) {
+                 ex.hi = ixs.hi; ex.clrd = ixs.clrd; ex.l = ixs.l; ex.r = ixs.r;
+             } else {
+                 xsl.push(ixs);
+             }
+         }
+      });
+    }else{
+      if(rows.some((x,i)=>i>0&&(x.bs||x.ifs||x.fs))&&!confirm("แทนที่ข้อมูลในตารางปัจจุบันด้วยไฟล์ที่นำเข้า?"))
+        {msg.textContent="ยกเลิกการนำเข้า";return}
+      rows=r.list;if(r.el0!==null)S.v=r.el0;
+      xsl = importedXs;
+    }
+    if(rows.length<1)rows=[mk("BM.0")];
+    build();
+    
+    rows.forEach(rowItem => {
+      const m = staM(rowItem.sta);
+      if (m !== null && !xsl.some(x => staM(x.sta) === m)) {
+        xsl.push(newX(rowItem.sta));
+      }
+    });
+    sortXsl();
+    build2();
+
+    msg.textContent="✓ นำเข้า "+r.list.length+" แถว"+(r.header?"":" (ไม่พบหัวตาราง ใช้ลำดับ STA, B.S., IFS., FS., Remark)")+(r.el0!==null?" · ตั้ง Elevation BM = "+r.el0:" · Elevation BM ใช้ค่าเดิมของตาราง");
+  }catch(err){msg.className="warn";msg.textContent="นำเข้าไม่สำเร็จ: "+((err&&err.message)||err)}
+};
+
+const toPng=svg=>new Promise((res,rej)=>{const im=new Image();im.onload=()=>{const w=im.width||1280,h=im.height||560;const c=document.createElement("canvas");c.width=w;c.height=h;const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,w,h);x.drawImage(im,0,0,w,h);res({b64:c.toDataURL("image/png"),w,h})};im.onerror=rej;im.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg)});
+async function exportXlsx(dl){
+  const b=$("xl");b.disabled=true;b.textContent="กำลังสร้างไฟล์…";
+  try{
+    if(typeof ExcelJS==="undefined")throw new Error("โหลดตัวสร้างไฟล์ Excel ไม่ได้ ต้องเชื่อมต่ออินเทอร์เน็ตก่อน");
+    const wb=new ExcelJS.Workbook(),NF="0.000";
+    const hd=(row)=>row.eachCell(c=>{c.font={bold:true};c.fill={type:"pattern",pattern:"solid",fgColor:{argb:"FFE3ECE8"}};c.alignment={horizontal:"center"}});
+    const w1=wb.addWorksheet("Level Book");
+    hd(w1.addRow(["STA","B.S.","HI.","IFS.","FS.","Elevation","Remark"]));
+    rows.forEach((r,i)=>{w1.addRow([r.sta,n(r.bs),r.hiShow,n(r.ifs),n(r.fs),r.el,r.remark]);});
+    w1.columns.forEach(c=>{c.width=14;c.numFmt=NF});w1.getColumn(1).numFmt="@";w1.getColumn(7).numFmt="@";
+    const w2=wb.addWorksheet("Profile");
+    hd(w2.addRow(["STA","Elevation"]));G.pp.forEach(p=>w2.addRow([fmtSTA(p.x),p.y]));
+    w2.getColumn(1).width=14;w2.getColumn(2).width=14;w2.getColumn(2).numFmt=NF;
+    if(G.pp.length>1){const img=await toPng(svgChart(G.pp,{prof:true,ex:true,label:"Profile",fx:fmtSTA,xl:"STA"}));const id=wb.addImage({base64:img.b64,extension:"png"});
+      w2.addImage(id,{tl:{col:3,row:1},ext:{width:img.w,height:img.h}})}
+    const w3=wb.addWorksheet("Cross section");w3.columns=Array.from({length:14},()=>({width:14}));
+    let cur=1;
+    for(const x of xsl){
+      computeX(x);
+      const t=w3.getRow(cur);t.getCell(1).value="STA "+x.sta+(x.used!==null?"   HI "+f(x.used):"");t.getCell(1).font={bold:true,size:13};cur++;
+      const line=(lab,fl,fc,fr)=>{const r=w3.getRow(cur++);r.getCell(1).value=lab;let c=2;
+        x.l.forEach(p=>r.getCell(c++).value=fl(p));r.getCell(c++).value=fc;x.r.forEach(p=>r.getCell(c++).value=fr(p));
+        for(let k=2;k<c;k++)r.getCell(k).numFmt=NF;return r};
+      const g0=w3.getRow(cur++);g0.getCell(1).value="ด้าน";let c=2;
+      x.l.forEach(()=>g0.getCell(c++).value="ซ้าย (Left)");g0.getCell(c++).value="CL";x.r.forEach(()=>g0.getCell(c++).value="ขวา (Right)");hd(g0);
+      line("ระยะรวมจาก CL (ม.)",p=>p.off,0,p=>p.off);
+      line("ระยะระหว่างจุด (ม.)",p=>n(p.sp),0,p=>n(p.sp));
+      line("ค่าอ่านไม้",p=>n(p.rd),x.rd,p=>n(p.rd));
+      line("Elevation",p=>p.ev,x.el,p=>p.ev);
+      if(x.cp.length>1){const img=await toPng(xChart(x,true));const id=wb.addImage({base64:img.b64,extension:"png"});
+        w3.addImage(id,{tl:{col:0,row:cur},ext:{width:img.w,height:img.h}})}
+      cur+=20;
+    }
+    w3.getColumn(1).width=22;
+    const buf=await wb.xlsx.writeBuffer();
+    const blob=new Blob([buf],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+    if(dl)await dl.save({filename:"สมุดสนามงานระดับ.xlsx",data:blob});
+    else{const u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download="สมุดสนามงานระดับ.xlsx";document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000)}
+  }catch(e){if(!e||e.code!=="declined")alert("ส่งออกไม่สำเร็จ: "+((e&&e.message)||e))}
+  b.disabled=false;b.textContent="⬇ ส่งออก Excel (พร้อมรูป)";
+}
+$("xl").onclick=()=>exportXlsx(null);
+$("sv").onclick=()=>saveHtml(null);
+$("dwg").onclick=()=>exportCAD(null);
+$("step").addEventListener("input",persist);
+try{window.claude&&claude.use("downloads").then(dl=>{if(dl){$("xl").onclick=()=>exportXlsx(dl);$("sv").onclick=()=>saveHtml(dl);$("dwg").onclick=()=>exportCAD(dl)}})}catch(e){}
+document.addEventListener("keydown",e=>{
+  if(e.key!=="Enter"||e.isComposing||e.target.tagName!=="INPUT"||e.target.id==="step")return;
+  const td=e.target.closest("td");if(!td)return;
+  const idx=td.cellIndex;let tr=td.parentElement.nextElementSibling;
+  while(tr){const c=tr.cells[idx],i=c&&c.querySelector("input");if(i){e.preventDefault();i.focus();i.select();return}tr=tr.nextElementSibling}
+  if(td.parentElement.parentElement.id==="tb"){
+    e.preventDefault();rows.push(mk(nextSta()));build();
+    const last=$("tb").lastElementChild,c=last&&last.cells[idx],i=c&&c.querySelector("input");
+    if(i){i.focus();i.select()}
+  }
+});
+(function(){
+  const rd=t=>{try{const d=JSON.parse(t);return d&&Array.isArray(d.rows)&&d.rows.length?d:null}catch(e){return null}};
+  let a=null,b=null;
+  try{a=rd(localStorage.getItem(KEY))}catch(e){}
+  b=rd($("saved").textContent.trim()||"null");
+  const d=a&&b?((a.t||0)>=(b.t||0)?a:b):(a||b);
+  if(d){applySnap(d);build();build2()}else $("example").click();
+})();
+</script>
+</body></html>
