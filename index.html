@@ -174,8 +174,6 @@ function inp(o,k,cls="",type="number"){
         let num = parseFloat(val);
         if(!isNaN(num)){
           const fm = $("fastMode");
-          // เงื่อนไขโหมดพิมพ์เร็ว: จะหาร 1000 ก็ต่อเมื่อเปิดสวิตช์ + ไม่มีจุดทศนิยม + ยาวตั้งแต่ 3 หลักขึ้นไป (เช่น 1406)
-          // ถ้าพิมพ์ 1 หรือ 15 จะไม่หาร 1000 แต่จะปัดทศนิยมเป็น 3 ตำแหน่งปกติ (เช่น 1.000, 15.000)
           if(fm && fm.checked && !val.includes(".") && val.length >= 3){
             num = num / 1000;
           }
