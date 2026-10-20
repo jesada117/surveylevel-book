@@ -13,8 +13,11 @@ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:en
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans Thai",system-ui,sans-serif;line-height:1.5;font-size:16px}
 main{max-width:1500px;margin:0 auto;padding:16px 16px 56px}
-.hero{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:linear-gradient(135deg,#17594a,#2c8a72);color:#fff;border-radius:14px;padding:20px 24px;margin-bottom:16px}
+.hero{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;background:linear-gradient(135deg,#17594a,#2c8a72);color:#fff;border-radius:14px;padding:20px 24px;margin-bottom:16px}
 .hero h1{color:#fff;margin:0}.hero .hb{flex-wrap:wrap}.hero .sub{color:#d8efe7;margin:4px 0 0}
+.project-input-wrap{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.18);padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.3);width:100%;max-width:480px;margin-top:8px}
+.project-input-wrap label{font-size:0.95rem;font-weight:600;white-space:nowrap;color:#fff}
+.project-input-wrap input{background:#fff;color:#17594a;border:0;border-radius:6px;font-weight:600;padding:6px 12px;text-align:left;height:36px;min-height:36px}
 #xl,#sv,#dwg{background:#fff;color:#17594a;border:0;font-weight:700;min-height:42px;padding:0 16px}
 #dwg{background:#ffd166;color:#1d2b2a}
 h1{font-size:1.7rem;margin:4px 0 4px}h2{font-size:1.2rem;margin:0 0 12px;padding-left:10px;border-left:4px solid var(--accent)}h3{font-size:1rem;margin:0 0 4px}
@@ -81,13 +84,21 @@ svg.ch{height:auto;display:block;margin-top:8px}
 </head>
 <body>
 <main>
-  <div class="hero"><div><h1>สมุดสนามงานระดับ</h1>
-  <p class="sub">ใส่ Elevation ของ BM แล้วพิมพ์ B.S., IFS., FS. ระบบคำนวณ HI และ Elevation พร้อมวาดกริด 1:100 และส่งออก CAD</p></div>
-  <div class="hb">
-    <button id="sv" type="button" title="บันทึกข้อมูลปัจจุบันลงในไฟล์ HTML ใหม่">💾 บันทึกเป็นไฟล์ HTML</button>
-    <button id="xl" type="button">⬇ ส่งออก Excel (พร้อมรูป)</button>
-    <button id="dwg" type="button" title="ส่งออกไฟล์ CAD มาตราส่วน 1:200 (จัดหน้าละ 6 รูป) เปิดใน AutoCAD ได้ทันที">📐 ส่งออก CAD (.DXF / DWG 1:200)</button>
-  </div></div>
+  <div class="hero">
+    <div>
+      <h1>สมุดสนามงานระดับ</h1>
+      <p class="sub">ใส่ Elevation ของ BM แล้วพิมพ์ B.S., IFS., FS. ระบบคำนวณ HI และ Elevation พร้อมวาดกริด 1:100 และส่งออก CAD</p>
+      <div class="project-input-wrap">
+        <label for="projectName">🏷️ ชื่อโครงการ:</label>
+        <input type="text" id="projectName" placeholder="พิมพ์ชื่อโครงการ (ใช้เป็นชื่อไฟล์ส่งออก)">
+      </div>
+    </div>
+    <div class="hb">
+      <button id="sv" type="button" title="บันทึกข้อมูลปัจจุบันลงในไฟล์ HTML ใหม่">💾 บันทึกเป็นไฟล์ HTML</button>
+      <button id="xl" type="button">⬇ ส่งออก Excel (พร้อมรูป)</button>
+      <button id="dwg" type="button" title="ส่งออกไฟล์ CAD มาตราส่วน 1:200 (จัดหน้าละ 6 รูป) เปิดใน AutoCAD ได้ทันที">📐 ส่งออก CAD (.DXF / DWG 1:200)</button>
+    </div>
+  </div>
   <div class="tabs">
     <button class="on" id="t1" type="button">1. ตารางงานระดับ</button>
     <button id="t2" type="button" class="">2. Cross section</button>
@@ -144,9 +155,8 @@ svg.ch{height:auto;display:block;margin-top:8px}
     <section><h2>Cross section ทุก STA (1:100 · กริด 1x1 ม.)</h2><div class="grid2" id="p3x"></div></section>
   </div>
 </main>
-<script id="saved" type="application/json">{"t":1792172793178,"v":"100","step":"25","rows":[{"sta":"BM.0","bs":"1.172","ifs":"","fs":"","remark":""},{"sta":"","bs":"","ifs":"1.722","fs":"","remark":""},{"sta":"0+000","bs":"","ifs":"1.948","fs":"","remark":""},{"sta":"0+025","bs":"","ifs":"2.1","fs":"","remark":""},{"sta":"TP.1","bs":"1.406","ifs":"","fs":"1.308","remark":""},{"sta":"0+050","bs":"","ifs":"2.4","fs":"","remark":""},{"sta":"ท้อง BOX","bs":"","ifs":"2.466","fs":"","remark":"ท้อง BOX"},{"sta":"0+083","bs":"","ifs":"2.588","fs":"","remark":""},{"sta":"0+100","bs":"","ifs":"2.567","fs":"","remark":""},{"sta":"TP.2","bs":"1.06","ifs":"","fs":"1.862","remark":""},{"sta":"0+125","bs":"","ifs":"1.924","fs":"","remark":""},{"sta":"0+150","bs":"","ifs":"2","fs":"","remark":""},{"sta":"0+169","bs":"","ifs":"2.15","fs":"","remark":""},{"sta":"0+175","bs":"","ifs":"2.15","fs":"","remark":""},{"sta":"0+200","bs":"","ifs":"2.25","fs":"","remark":""},{"sta":"0+225","bs":"","ifs":"2.315","fs":"","remark":""},{"sta":"0+250","bs":"","ifs":"2.425","fs":"","remark":""},{"sta":"TP.3","bs":"0.929","ifs":"","fs":"1.795","remark":""},{"sta":"0+275","bs":"","ifs":"1.766","fs":"","remark":""},{"sta":"0+300","bs":"","ifs":"1.81","fs":"","remark":""},{"sta":"0+325","bs":"","ifs":"2.125","fs":"","remark":""},{"sta":"0+350","bs":"","ifs":"2.19","fs":"","remark":""},{"sta":"BM.0/1","bs":"","ifs":"1.042","fs":"","remark":"BM.0/1"},{"sta":"TP.4","bs":"0.725","ifs":"","fs":"1.573","remark":""},{"sta":"0+375","bs":"","ifs":"1.47","fs":"","remark":""},{"sta":"0+400","bs":"","ifs":"1.587","fs":"","remark":""},{"sta":"0+425","bs":"","ifs":"1.71","fs":"","remark":""},{"sta":"0+450","bs":"","ifs":"1.765","fs":"","remark":""},{"sta":"0+468","bs":"","ifs":"1.865","fs":"","remark":""},{"sta":"0+475","bs":"","ifs":"1.821","fs":"","remark":""},{"sta":"0+500","bs":"","ifs":"1.85","fs":"","remark":""},{"sta":"TP.5","bs":"0.82","ifs":"","fs":"1.379","remark":""},{"sta":"0+525","bs":"","ifs":"1.38","fs":"","remark":""},{"sta":"0+550","bs":"","ifs":"1.49","fs":"","remark":""},{"sta":"0+575","bs":"","ifs":"1.625","fs":"","remark":""},{"sta":"0+600","bs":"","ifs":"1.69","fs":"","remark":""},{"sta":"0+625","bs":"","ifs":"1.815","fs":"","remark":""},{"sta":"0+650","bs":"","ifs":"1.89","fs":"","remark":""},{"sta":"0+675","bs":"","ifs":"1.955","fs":"","remark":""},{"sta":"TP.6","bs":"0.825","ifs":"","fs":"1.01","remark":""},{"sta":"0+700","bs":"","ifs":"1.83","fs":"","remark":""},{"sta":"0+750","bs":"","ifs":"1.97","fs":"","remark":""},{"sta":"0+800","bs":"","ifs":"2.1","fs":"","remark":""},{"sta":"0+850","bs":"","ifs":"2.27","fs":"","remark":""},{"sta":"0+900","bs":"","ifs":"2.4","fs":"","remark":""},{"sta":"TP.7","bs":"1.565","ifs":"","fs":"1.75","remark":""},{"sta":"0+950","bs":"","ifs":"2.5","fs":"","remark":""},{"sta":"1+000","bs":"","ifs":"2.93","fs":"","remark":""},{"sta":"BM.1","bs":"","ifs":"","fs":"1.606","remark":""}],"xs":[{"sta":"0+000","hi":"","clrd":"","l":[{"sp":"1","rd":"1.165"},{"sp":"1.1","rd":"1.190"},{"sp":"1","rd":"1.829"}],"r":[{"sp":"1.8","rd":"1.933"},{"sp":"1","rd":"1.343"}]},{"sta":"0+025","hi":"","clrd":"","l":[{"sp":"1","rd":"1.495"},{"sp":".5","rd":"1.485"},{"sp":".5","rd":"1.983"}],"r":[{"sp":".5","rd":"1.983"},{"sp":".3","rd":"1.485"},{"sp":"1","rd":"1.485"}]},{"sta":"0+050","hi":"","clrd":"","l":[{"sp":".5","rd":"1.3"},{"sp":"1","rd":"1.362"},{"sp":".5","rd":"2.049"}],"r":[{"sp":".5","rd":"2.312"},{"sp":".3","rd":"1.738"},{"sp":"1","rd":"1.705"}]},{"sta":"0+083","hi":"","clrd":"","l":[{"sp":"1","rd":"1.906"},{"sp":".5","rd":"1.906"},{"sp":".5","rd":"2.457"}],"r":[{"sp":".5","rd":"2.653"},{"sp":".2","rd":"1.811"},{"sp":".8","rd":"1.811"}]},{"sta":"0+100","hi":"","clrd":"","l":[{"sp":"1","rd":"1.920"},{"sp":".5","rd":"1.920"},{"sp":".5","rd":"2.570"}],"r":[{"sp":".5","rd":"2.560"},{"sp":".2","rd":"1.920"},{"sp":"1","rd":"2.030"}]},{"sta":"0+125","hi":"","clrd":"","l":[{"sp":"1","rd":"1.233"},{"sp":".5","rd":"1.233"},{"sp":".5","rd":"1.800"}],"r":[{"sp":"1","rd":"1.669"},{"sp":"1","rd":"1.150"},{"sp":".9","rd":"1.275"}]}]}</script>
+<script id="saved" type="application/json">{"t":1792172793178,"v":"100","step":"25","project":"","rows":[{"sta":"BM.0","bs":"1.172","ifs":"","fs":"","remark":""},{"sta":"","bs":"","ifs":"1.722","fs":"","remark":""},{"sta":"0+000","bs":"","ifs":"1.948","fs":"","remark":""},{"sta":"0+025","bs":"","ifs":"2.1","fs":"","remark":""},{"sta":"TP.1","bs":"1.406","ifs":"","fs":"1.308","remark":""},{"sta":"0+050","bs":"","ifs":"2.4","fs":"","remark":""},{"sta":"ท้อง BOX","bs":"","ifs":"2.466","fs":"","remark":"ท้อง BOX"},{"sta":"0+083","bs":"","ifs":"2.588","fs":"","remark":""},{"sta":"0+100","bs":"","ifs":"2.567","fs":"","remark":""},{"sta":"TP.2","bs":"1.06","ifs":"","fs":"1.862","remark":""},{"sta":"0+125","bs":"","ifs":"1.924","fs":"","remark":""},{"sta":"0+150","bs":"","ifs":"2","fs":"","remark":""},{"sta":"0+169","bs":"","ifs":"2.15","fs":"","remark":""},{"sta":"0+175","bs":"","ifs":"2.15","fs":"","remark":""},{"sta":"0+200","bs":"","ifs":"2.25","fs":"","remark":""},{"sta":"0+225","bs":"","ifs":"2.315","fs":"","remark":""},{"sta":"0+250","bs":"","ifs":"2.425","fs":"","remark":""},{"sta":"TP.3","bs":"0.929","ifs":"","fs":"1.795","remark":""},{"sta":"0+275","bs":"","ifs":"1.766","fs":"","remark":""},{"sta":"0+300","bs":"","ifs":"1.81","fs":"","remark":""},{"sta":"0+325","bs":"","ifs":"2.125","fs":"","remark":""},{"sta":"0+350","bs":"","ifs":"2.19","fs":"","remark":""},{"sta":"BM.0/1","bs":"","ifs":"1.042","fs":"","remark":"BM.0/1"},{"sta":"TP.4","bs":"0.725","ifs":"","fs":"1.573","remark":""},{"sta":"0+375","bs":"","ifs":"1.47","fs":"","remark":""},{"sta":"0+400","bs":"","ifs":"1.587","fs":"","remark":""},{"sta":"0+425","bs":"","ifs":"1.71","fs":"","remark":""},{"sta":"0+450","bs":"","ifs":"1.765","fs":"","remark":""},{"sta":"0+468","bs":"","ifs":"1.865","fs":"","remark":""},{"sta":"0+475","bs":"","ifs":"1.821","fs":"","remark":""},{"sta":"0+500","bs":"","ifs":"1.85","fs":"","remark":""},{"sta":"TP.5","bs":"0.82","ifs":"","fs":"1.379","remark":""},{"sta":"0+525","bs":"","ifs":"1.38","fs":"","remark":""},{"sta":"0+550","bs":"","ifs":"1.49","fs":"","remark":""},{"sta":"0+575","bs":"","ifs":"1.625","fs":"","remark":""},{"sta":"0+600","bs":"","ifs":"1.69","fs":"","remark":""},{"sta":"0+625","bs":"","ifs":"1.815","fs":"","remark":""},{"sta":"0+650","bs":"","ifs":"1.89","fs":"","remark":""},{"sta":"0+675","bs":"","ifs":"1.955","fs":"","remark":""},{"sta":"TP.6","bs":"0.825","ifs":"","fs":"1.01","remark":""},{"sta":"0+700","bs":"","ifs":"1.83","fs":"","remark":""},{"sta":"0+750","bs":"","ifs":"1.97","fs":"","remark":""},{"sta":"0+800","bs":"","ifs":"2.1","fs":"","remark":""},{"sta":"0+850","bs":"","ifs":"2.27","fs":"","remark":""},{"sta":"0+900","bs":"","ifs":"2.4","fs":"","remark":""},{"sta":"TP.7","bs":"1.565","ifs":"","fs":"1.75","remark":""},{"sta":"0+950","bs":"","ifs":"2.5","fs":"","remark":""},{"sta":"1+000","bs":"","ifs":"2.93","fs":"","remark":""},{"sta":"BM.1","bs":"","ifs":"","fs":"1.606","remark":""}],"xs":[{"sta":"0+000","hi":"","clrd":"","l":[{"sp":"1","rd":"1.165"},{"sp":"1.1","rd":"1.190"},{"sp":"1","rd":"1.829"}],"r":[{"sp":"1.8","rd":"1.933"},{"sp":"1","rd":"1.343"}]},{"sta":"0+025","hi":"","clrd":"","l":[{"sp":"1","rd":"1.495"},{"sp":".5","rd":"1.485"},{"sp":".5","rd":"1.983"}],"r":[{"sp":".5","rd":"1.983"},{"sp":".3","rd":"1.485"},{"sp":"1","rd":"1.485"}]},{"sta":"0+050","hi":"","clrd":"","l":[{"sp":".5","rd":"1.3"},{"sp":"1","rd":"1.362"},{"sp":".5","rd":"2.049"}],"r":[{"sp":".5","rd":"2.312"},{"sp":".3","rd":"1.738"},{"sp":"1","rd":"1.705"}]},{"sta":"0+083","hi":"","clrd":"","l":[{"sp":"1","rd":"1.906"},{"sp":".5","rd":"1.906"},{"sp":".5","rd":"2.457"}],"r":[{"sp":".5","rd":"2.653"},{"sp":".2","rd":"1.811"},{"sp":".8","rd":"1.811"}]},{"sta":"0+100","hi":"","clrd":"","l":[{"sp":"1","rd":"1.920"},{"sp":".5","rd":"1.920"},{"sp":".5","rd":"2.570"}],"r":[{"sp":".5","rd":"2.560"},{"sp":".2","rd":"1.920"},{"sp":"1","rd":"2.030"}]},{"sta":"0+125","hi":"","clrd":"","l":[{"sp":"1","rd":"1.233"},{"sp":".5","rd":"1.233"},{"sp":".5","rd":"1.800"}],"r":[{"sp":"1","rd":"1.669"},{"sp":"1","rd":"1.150"},{"sp":".9","rd":"1.275"}]}]}</script>
 <script>
-// โหลด ExcelJS เมื่อจำเป็นต้องใช้งาน ป้องกันเบราว์เซอร์ค้างหมุนตอนเปิดหน้าเว็บ
 function loadExcelJS() {
   return new Promise((resolve, reject) => {
     if (typeof ExcelJS !== "undefined") return resolve(ExcelJS);
@@ -172,6 +182,13 @@ const S={v:"100.000"};
 let rows=[];
 const mk=(sta="",bs="",ifs="",fs="",remark="",xs=null)=>({sta,bs,ifs,fs,remark,xs});
 const btn=(t,fn,cls="")=>{const b=document.createElement("button");b.type="button";b.textContent=t;b.className=cls;b.onclick=fn;return b};
+
+// ฟังก์ชันหาชื่อไฟล์ที่กำหนดจากชื่อโครงการ
+function getFileName(suffix, ext) {
+  const pName = $("projectName") ? $("projectName").value.trim() : "";
+  const base = pName ? pName : "สมุดสนามงานระดับ";
+  return `${base}${suffix}.${ext}`;
+}
 
 function inp(o,k,cls="",type="number"){
   const i=document.createElement("input");i.type=type;i.className=cls;
@@ -515,6 +532,7 @@ $("example").onclick=()=>{
 };
 
 function exportCAD(dl){
+  const pName = $("projectName") ? $("projectName").value.trim() : "";
   let dxf="0\nSECTION\n2\nHEADER\n9\n$INSUNITS\n70\n6\n0\nENDSEC\n";
   dxf+="0\nSECTION\n2\nTABLES\n0\nTABLE\n2\nLAYER\n70\n6\n";
   
@@ -552,7 +570,8 @@ function exportCAD(dl){
     const y0=Math.floor(minY)-2,y1=Math.ceil(maxY)+2;
     const ox=0,oy=100; 
 
-    dText(ox+(x1-x0)/2,oy+(y1-y0)+2, 1.5, "PROFILE", "TEXT_GREEN", "C");
+    const pTitle = pName ? `PROFILE - ${pName}` : "PROFILE";
+    dText(ox+(x1-x0)/2,oy+(y1-y0)+2, 1.5, pTitle, "TEXT_GREEN", "C");
 
     for(let y=y0;y<=y1;y++){
       const py=oy+(y-y0);
@@ -584,7 +603,9 @@ function exportCAD(dl){
 
     dRect(baseX, baseY, baseX + 84, baseY + 59.4, "FRAME");
     dLine(baseX, baseY + 5, baseX + 84, baseY + 5, "FRAME");
-    dText(baseX + 42, baseY + 2, 1.2, "CROSS SECTIONS (SCALE 1:200)", "TEXT_GREEN", "C");
+    
+    const bannerText = pName ? `PROJECT: ${pName}  |  CROSS SECTIONS (SCALE 1:200)` : "CROSS SECTIONS (SCALE 1:200)";
+    dText(baseX + 42, baseY + 2, 1.2, bannerText, "TEXT_GREEN", "C");
 
     chunk.forEach((x, idx) => {
       const col = idx % 2; 
@@ -637,7 +658,7 @@ function exportCAD(dl){
 
   dxf+="0\nENDSEC\n0\nEOF\n";
   const blob=new Blob([dxf],{type:"application/dxf"});
-  const name="Profile_CrossSection_1_200.dxf";
+  const name=getFileName("_1_200", "dxf");
   if(dl)dl.save({filename:name,data:blob});
   else{
     const u=URL.createObjectURL(blob),a=document.createElement("a");
@@ -649,6 +670,7 @@ function exportCAD(dl){
 const KEY="levelbook-v1";
 function snapshot(){return{
   t:Date.now(),v:S.v,step:$("step").value, fastMode:$("fastMode")?$("fastMode").checked:false,
+  project:$("projectName")?$("projectName").value:"",
   rows:rows.map(r=>({sta:r.sta,bs:r.bs,ifs:r.ifs,fs:r.fs,remark:r.remark})),
   xs:xsl.map(x=>({sta:x.sta,hi:x.hi??"",clrd:x.clrd??"",l:x.l.map(p=>({sp:p.sp,rd:p.rd})),r:x.r.map(p=>({sp:p.sp,rd:p.rd}))}))
 }}
@@ -657,6 +679,7 @@ function applySnap(d){
   S.v=d.v!=null?String(d.v):"100.000";
   if(d.step!=null)$("step").value=d.step;
   if(d.fastMode!=null&&$("fastMode"))$("fastMode").checked=d.fastMode;
+  if(d.project!=null&&$("projectName"))$("projectName").value=d.project;
   rows=d.rows.map(r=>mk(r.sta||"",r.bs||"",r.ifs||"",r.fs||"",r.remark||""));
   xsl=(d.xs||[]).map(x=>({sta:x.sta||"",hi:x.hi||"",clrd:x.clrd||"",l:(x.l||[]).map(p=>({sp:p.sp||"",rd:p.rd||""})),r:(x.r||[]).map(p=>({sp:p.sp||"",rd:p.rd||""}))}));
   sortXsl();
@@ -670,7 +693,7 @@ async function saveHtml(dl){
       if(i===1)p.removeAttribute("hidden");else p.setAttribute("hidden","");b.className=i===1?"on":""});
     const x=clone.querySelector("#xl");x.removeAttribute("disabled");x.textContent="⬇ ส่งออก Excel (พร้อมรูป)";
     const blob=new Blob(["<!DOCTYPE html>\n"+clone.outerHTML],{type:"text/html"});
-    const name="สมุดสนามงานระดับ.html";
+    const name=getFileName("", "html");
     if(dl)await dl.save({filename:name,data:blob});
     else{const u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000)}
   }catch(e){if(!e||e.code!=="declined")alert("บันทึกไม่สำเร็จ: "+((e&&e.message)||e))}
@@ -898,8 +921,9 @@ async function exportXlsx(dl){
     w3.getColumn(1).width=22;
     const buf=await wb.xlsx.writeBuffer();
     const blob=new Blob([buf],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
-    if(dl)await dl.save({filename:"สมุดสนามงานระดับ.xlsx",data:blob});
-    else{const u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download="สมุดสนามงานระดับ.xlsx";document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000)}
+    const name=getFileName("", "xlsx");
+    if(dl)await dl.save({filename:name,data:blob});
+    else{const u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000)}
   }catch(e){if(!e||e.code!=="declined")alert("ส่งออกไม่สำเร็จ: "+((e&&e.message)||e))}
   b.disabled=false;b.textContent="⬇ ส่งออก Excel (พร้อมรูป)";
 }
@@ -907,9 +931,11 @@ $("xl").onclick=()=>exportXlsx(null);
 $("sv").onclick=()=>saveHtml(null);
 $("dwg").onclick=()=>exportCAD(null);
 $("step").addEventListener("input",persist);
+if($("projectName")) $("projectName").addEventListener("input", persist);
+
 try{window.claude&&claude.use("downloads").then(dl=>{if(dl){$("xl").onclick=()=>exportXlsx(dl);$("sv").onclick=()=>saveHtml(dl);$("dwg").onclick=()=>exportCAD(dl)}})}catch(e){}
 document.addEventListener("keydown",e=>{
-  if(e.key!=="Enter"||e.isComposing||e.target.tagName!=="INPUT"||e.target.id==="step")return;
+  if(e.key!=="Enter"||e.isComposing||e.target.tagName!=="INPUT"||e.target.id==="step"||e.target.id==="projectName")return;
   const td=e.target.closest("td");if(!td)return;
   const idx=td.cellIndex;let tr=td.parentElement.nextElementSibling;
   while(tr){const c=tr.cells[idx],i=c&&c.querySelector("input");if(i){e.preventDefault();i.focus();i.select();return}tr=tr.nextElementSibling}
