@@ -145,8 +145,19 @@ svg.ch{height:auto;display:block;margin-top:8px}
   </div>
 </main>
 <script id="saved" type="application/json">{"t":1792172793178,"v":"100","step":"25","rows":[{"sta":"BM.0","bs":"1.172","ifs":"","fs":"","remark":""},{"sta":"","bs":"","ifs":"1.722","fs":"","remark":""},{"sta":"0+000","bs":"","ifs":"1.948","fs":"","remark":""},{"sta":"0+025","bs":"","ifs":"2.1","fs":"","remark":""},{"sta":"TP.1","bs":"1.406","ifs":"","fs":"1.308","remark":""},{"sta":"0+050","bs":"","ifs":"2.4","fs":"","remark":""},{"sta":"ท้อง BOX","bs":"","ifs":"2.466","fs":"","remark":"ท้อง BOX"},{"sta":"0+083","bs":"","ifs":"2.588","fs":"","remark":""},{"sta":"0+100","bs":"","ifs":"2.567","fs":"","remark":""},{"sta":"TP.2","bs":"1.06","ifs":"","fs":"1.862","remark":""},{"sta":"0+125","bs":"","ifs":"1.924","fs":"","remark":""},{"sta":"0+150","bs":"","ifs":"2","fs":"","remark":""},{"sta":"0+169","bs":"","ifs":"2.15","fs":"","remark":""},{"sta":"0+175","bs":"","ifs":"2.15","fs":"","remark":""},{"sta":"0+200","bs":"","ifs":"2.25","fs":"","remark":""},{"sta":"0+225","bs":"","ifs":"2.315","fs":"","remark":""},{"sta":"0+250","bs":"","ifs":"2.425","fs":"","remark":""},{"sta":"TP.3","bs":"0.929","ifs":"","fs":"1.795","remark":""},{"sta":"0+275","bs":"","ifs":"1.766","fs":"","remark":""},{"sta":"0+300","bs":"","ifs":"1.81","fs":"","remark":""},{"sta":"0+325","bs":"","ifs":"2.125","fs":"","remark":""},{"sta":"0+350","bs":"","ifs":"2.19","fs":"","remark":""},{"sta":"BM.0/1","bs":"","ifs":"1.042","fs":"","remark":"BM.0/1"},{"sta":"TP.4","bs":"0.725","ifs":"","fs":"1.573","remark":""},{"sta":"0+375","bs":"","ifs":"1.47","fs":"","remark":""},{"sta":"0+400","bs":"","ifs":"1.587","fs":"","remark":""},{"sta":"0+425","bs":"","ifs":"1.71","fs":"","remark":""},{"sta":"0+450","bs":"","ifs":"1.765","fs":"","remark":""},{"sta":"0+468","bs":"","ifs":"1.865","fs":"","remark":""},{"sta":"0+475","bs":"","ifs":"1.821","fs":"","remark":""},{"sta":"0+500","bs":"","ifs":"1.85","fs":"","remark":""},{"sta":"TP.5","bs":"0.82","ifs":"","fs":"1.379","remark":""},{"sta":"0+525","bs":"","ifs":"1.38","fs":"","remark":""},{"sta":"0+550","bs":"","ifs":"1.49","fs":"","remark":""},{"sta":"0+575","bs":"","ifs":"1.625","fs":"","remark":""},{"sta":"0+600","bs":"","ifs":"1.69","fs":"","remark":""},{"sta":"0+625","bs":"","ifs":"1.815","fs":"","remark":""},{"sta":"0+650","bs":"","ifs":"1.89","fs":"","remark":""},{"sta":"0+675","bs":"","ifs":"1.955","fs":"","remark":""},{"sta":"TP.6","bs":"0.825","ifs":"","fs":"1.01","remark":""},{"sta":"0+700","bs":"","ifs":"1.83","fs":"","remark":""},{"sta":"0+750","bs":"","ifs":"1.97","fs":"","remark":""},{"sta":"0+800","bs":"","ifs":"2.1","fs":"","remark":""},{"sta":"0+850","bs":"","ifs":"2.27","fs":"","remark":""},{"sta":"0+900","bs":"","ifs":"2.4","fs":"","remark":""},{"sta":"TP.7","bs":"1.565","ifs":"","fs":"1.75","remark":""},{"sta":"0+950","bs":"","ifs":"2.5","fs":"","remark":""},{"sta":"1+000","bs":"","ifs":"2.93","fs":"","remark":""},{"sta":"BM.1","bs":"","ifs":"","fs":"1.606","remark":""}],"xs":[{"sta":"0+000","hi":"","clrd":"","l":[{"sp":"1","rd":"1.165"},{"sp":"1.1","rd":"1.190"},{"sp":"1","rd":"1.829"}],"r":[{"sp":"1.8","rd":"1.933"},{"sp":"1","rd":"1.343"}]},{"sta":"0+025","hi":"","clrd":"","l":[{"sp":"1","rd":"1.495"},{"sp":".5","rd":"1.485"},{"sp":".5","rd":"1.983"}],"r":[{"sp":".5","rd":"1.983"},{"sp":".3","rd":"1.485"},{"sp":"1","rd":"1.485"}]},{"sta":"0+050","hi":"","clrd":"","l":[{"sp":".5","rd":"1.3"},{"sp":"1","rd":"1.362"},{"sp":".5","rd":"2.049"}],"r":[{"sp":".5","rd":"2.312"},{"sp":".3","rd":"1.738"},{"sp":"1","rd":"1.705"}]},{"sta":"0+083","hi":"","clrd":"","l":[{"sp":"1","rd":"1.906"},{"sp":".5","rd":"1.906"},{"sp":".5","rd":"2.457"}],"r":[{"sp":".5","rd":"2.653"},{"sp":".2","rd":"1.811"},{"sp":".8","rd":"1.811"}]},{"sta":"0+100","hi":"","clrd":"","l":[{"sp":"1","rd":"1.920"},{"sp":".5","rd":"1.920"},{"sp":".5","rd":"2.570"}],"r":[{"sp":".5","rd":"2.560"},{"sp":".2","rd":"1.920"},{"sp":"1","rd":"2.030"}]},{"sta":"0+125","hi":"","clrd":"","l":[{"sp":"1","rd":"1.233"},{"sp":".5","rd":"1.233"},{"sp":".5","rd":"1.800"}],"r":[{"sp":"1","rd":"1.669"},{"sp":"1","rd":"1.150"},{"sp":".9","rd":"1.275"}]}]}</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
 <script>
+// โหลด ExcelJS เมื่อจำเป็นต้องใช้งาน ป้องกันเบราว์เซอร์ค้างหมุนตอนเปิดหน้าเว็บ
+function loadExcelJS() {
+  return new Promise((resolve, reject) => {
+    if (typeof ExcelJS !== "undefined") return resolve(ExcelJS);
+    const s = document.createElement("script");
+    s.src = "https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js";
+    s.onload = () => resolve(window.ExcelJS);
+    s.onerror = () => reject(new Error("เชื่อมต่อดาวน์โหลดระบบ Excel ไม่สำเร็จ กรุณาตรวจสอบอินเทอร์เน็ต"));
+    document.head.appendChild(s);
+  });
+}
+
 document.addEventListener('wheel', function(e) {
   if (e.target.type === 'number') {
     e.preventDefault();
@@ -697,8 +708,8 @@ function cellVal(v){
   return String(v);
 }
 async function readXlsx(buf){
-  if(typeof ExcelJS==="undefined")throw new Error("โหลดตัวอ่านไฟล์ Excel ไม่ได้ ต้องเชื่อมต่ออินเทอร์เน็ตก่อน");
-  const wb=new ExcelJS.Workbook();await wb.xlsx.load(buf);
+  const ExcelLib = await loadExcelJS();
+  const wb=new ExcelLib.Workbook();await wb.xlsx.load(buf);
   
   const wsLevel = wb.getWorksheet("Level Book") || wb.worksheets[0];
   if(!wsLevel)throw new Error("ไม่พบชีตในไฟล์");
@@ -850,11 +861,12 @@ $("impFile").onchange=async e=>{
 };
 
 const toPng=svg=>new Promise((res,rej)=>{const im=new Image();im.onload=()=>{const w=im.width||1280,h=im.height||560;const c=document.createElement("canvas");c.width=w;c.height=h;const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,w,h);x.drawImage(im,0,0,w,h);res({b64:c.toDataURL("image/png"),w,h})};im.onerror=rej;im.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg)});
+
 async function exportXlsx(dl){
   const b=$("xl");b.disabled=true;b.textContent="กำลังสร้างไฟล์…";
   try{
-    if(typeof ExcelJS==="undefined")throw new Error("โหลดตัวสร้างไฟล์ Excel ไม่ได้ ต้องเชื่อมต่ออินเทอร์เน็ตก่อน");
-    const wb=new ExcelJS.Workbook(),NF="0.000";
+    const ExcelLib = await loadExcelJS();
+    const wb=new ExcelLib.Workbook(),NF="0.000";
     const hd=(row)=>row.eachCell(c=>{c.font={bold:true};c.fill={type:"pattern",pattern:"solid",fgColor:{argb:"FFE3ECE8"}};c.alignment={horizontal:"center"}});
     const w1=wb.addWorksheet("Level Book");
     hd(w1.addRow(["STA","B.S.","HI.","IFS.","FS.","Elevation","Remark"]));
