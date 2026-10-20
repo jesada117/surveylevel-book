@@ -110,8 +110,8 @@ svg.ch{height:auto;display:block;margin-top:8px}
         <button id="clear">ล้างตาราง</button>
         <button id="imp" type="button">⬆ นำเข้า CSV / Excel</button>
         <label class="info" style="cursor:pointer;"><input type="checkbox" id="impAppend" style="width:auto;min-height:0;vertical-align:middle"> ต่อท้ายตารางเดิม</label>
-        <label class="info" style="cursor:pointer; color:var(--accent); font-weight:600; margin-left:8px;" title="พิมพ์ตัวเลขเช่น 1406 แล้วระบบจะใส่จุดให้เป็น 1.406 ทันที">
-          <input type="checkbox" id="fastMode" style="width:auto;min-height:0;vertical-align:middle"> ⚡ โหมดพิมพ์เร็ว (เช่น 1406 ➔ 1.406)
+        <label class="info" style="cursor:pointer; color:var(--accent); font-weight:600; margin-left:8px;" title="พิมพ์ตัวเลขเช่น 1406 แล้วระบบจะใส่จุดให้เป็น 1.406 ทันที (ถ้าพิมพ์ 1-2 หลักจะปัดเป็น .000)">
+          <input type="checkbox" id="fastMode" style="width:auto;min-height:0;vertical-align:middle"> ⚡ โหมดพิมพ์เร็ว
         </label>
         <input type="file" id="impFile" accept=".csv,.tsv,.txt,.xlsx" hidden="">
         <span id="impMsg" class="info"></span>
@@ -174,7 +174,8 @@ function inp(o,k,cls="",type="number"){
         let num = parseFloat(val);
         if(!isNaN(num)){
           const fm = $("fastMode");
-          if(fm && fm.checked && !val.includes(".")){
+          // ถ้าเปิดโหมด Fast Mode + ไม่มีจุดทศนิยม + มีตัวเลขตั้งแต่ 3 หลักขึ้นไป
+          if(fm && fm.checked && !val.includes(".") && val.length >= 3){
             num = num / 1000;
           }
           i.value = num.toFixed(3);
@@ -251,7 +252,6 @@ function svgChart(pts,o){
   const minY=Math.min(...ys),maxY=Math.max(...ys);
   const P=!!o.prof;
 
-  // สำหรับ Cross section ขยายกรอบเผื่อ บน-ล่าง อย่างละ 5 เมตร
   const yPadding = P ? 2 : 5;
   const y0 = Math.floor(minY) - yPadding;
   const y1 = Math.ceil(maxY) + yPadding;
@@ -259,7 +259,6 @@ function svgChart(pts,o){
   let x0=Math.floor(minX);
   let x1=Math.ceil(maxX);
   if(!P){
-    // ขยายกรอบซ้ายขวา อย่างน้อยให้กว้าง 6 เมตร
     x0 = Math.min(x0, -6);
     x1 = Math.max(x1, 6);
   }else if(x1===x0){
@@ -505,7 +504,6 @@ $("example").onclick=()=>{
   build();build2();
 };
 
-/* --- เปลี่ยนแปลงฟังก์ชัน exportCAD ใหม่ทั้งหมด ให้จัด Layout กรอบ A3 1:200 --- */
 function exportCAD(dl){
   let dxf="0\nSECTION\n2\nHEADER\n9\n$INSUNITS\n70\n6\n0\nENDSEC\n";
   dxf+="0\nSECTION\n2\nTABLES\n0\nTABLE\n2\nLAYER\n70\n6\n";
@@ -637,7 +635,6 @@ function exportCAD(dl){
     setTimeout(()=>URL.revokeObjectURL(u),2000);
   }
 }
-/* --- สิ้นสุดฟังก์ชัน exportCAD --- */
 
 const KEY="levelbook-v1";
 function snapshot(){return{
